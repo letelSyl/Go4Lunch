@@ -1,0 +1,33 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Go4Lunch</string>
+    <string name="main_name">I\'m Hungry!</string>
+    <string name="available_workmate">Available Workmate</string>
+
+    <string name="error_unknown_error">Une erreur inconnue s\'est produite&#8230;</string>
+    <string name="main_activity_description">Find a nice restaurant and invite your co-worker for lunch!</string>
+    <string name="sign_in_with_facebook">Sign in with Facebook</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
+
+    <!-- FACEBOOK PURPOSE -->
+    <string name="facebook_application_id" translatable="false">2938113756306629</string>
+    <string name="facebook_login_protocol_scheme" translatable="false" tools:ignore="UnusedResources">fb2938113756306629</string>
+
+    <!-- Used in NavigationDrawer -->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="info_no_email_found">No e-mail found</string>
+    <string name="info_no_username_found">No username found</string>
+    <string name="user_avatar">User Avatar</string>
+    <string name="username">UserName</string>
+    <string name="e_mail">e-mail</string>
+    <string name="your_lunch">YOUR LUNCH</string>
+    <string name="settings">SETTINGS</string>
+    <string name="logout">LOGOUT</string>
+
+    <!-- Bottom navigation view -->
+    <string name="bottom_navigation_menu_map_view">Map View</string>
+    <string name="bottom_navigation_menu_list_view">List View</string>
+    <string name="bottom_navigation_menu_workmates">Workmates</string>
+    <string name="title_activity_maps">Map</string>
+
+</resources>

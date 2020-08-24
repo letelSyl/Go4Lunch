@@ -1,5 +1,10 @@
 package com.example.go4lunch;
 
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -28,13 +33,17 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+
+import static java.security.AccessController.getContext;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -60,6 +69,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private MapFragment mMapFragment = new MapFragment();
     private ListFragment mListFragment = new ListFragment();
     private WorkmateFragment mWorkmateFragment = new WorkmateFragment();
+
+    private static double latitude;
+    private static double longitude;
+
+
 
 
     @Override
@@ -95,6 +109,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             this.startSignInActivity();
 
         }
+
+        getCurrentLocation();
     }
 
     @Override
@@ -316,6 +332,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
+    public void getCurrentLocation() {
 
+        LocationManager  locationManager = (LocationManager)
+                Objects.requireNonNull(this).getSystemService(Context.LOCATION_SERVICE);
+
+        if (ActivityCompat.checkSelfPermission(Objects.requireNonNull(this),
+                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            int REQUEST_LOCATION = 1;
+            ActivityCompat.requestPermissions(Objects.requireNonNull(this),
+                    new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                            android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_LOCATION);
+        } else {
+// For showing a move to my location button
+
+            Criteria criteria = new Criteria();
+            android.location.Location location = locationManager.getLastKnownLocation(Objects.requireNonNull(locationManager
+                    .getBestProvider(criteria, false)));
+            latitude = location.getLatitude();
+            longitude = location.getLongitude();
+        }
+
+
+
+    }
+
+    public static double getLatitude(){
+        return latitude;
+    }
+
+    public static double getLongitude(){
+        return longitude;
+    }
 
 }

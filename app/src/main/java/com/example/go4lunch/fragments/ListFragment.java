@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.go4lunch.MainActivity;
 import com.example.go4lunch.R;
 import com.example.go4lunch.databinding.ListFragmentBinding;
 import com.example.go4lunch.databinding.ListFragmentItemListBinding;
@@ -125,45 +126,18 @@ public class ListFragment extends Fragment {
         super.onDestroy();
         this.disposeWhenDestroy();
     }
-/*
-    private void configureRecyclerView(){
 
-            this.mAdapter = new ListFragmentRecyclerViewAdapter(this.mResults);
-         itemListBinding.list.setAdapter(this.mAdapter);
-        }
-*/
 
     private void executeHttpRequest(){
 
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-        LocationManager  locationManager = (LocationManager)
-                Objects.requireNonNull(getActivity()).getSystemService(Context.LOCATION_SERVICE);
 
 
+        latitude = MainActivity.getLatitude();
+        longitude = MainActivity.getLongitude();
 
-        String latLng;
-
-        if (ActivityCompat.checkSelfPermission(Objects.requireNonNull(getContext()),
-                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
-            int REQUEST_LOCATION = 1;
-            ActivityCompat.requestPermissions(Objects.requireNonNull(getActivity()),
-                    new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                            android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    REQUEST_LOCATION);
-        } else {
-
-            Criteria criteria = new Criteria();
-
-            assert locationManager != null;
-            Location location = locationManager.getLastKnownLocation(Objects.requireNonNull(locationManager
-                    .getBestProvider(criteria, false)));
-
-            assert location != null;
-            latitude = location.getLatitude();
-            longitude = location.getLongitude();
-
-            latLng = latitude+","+longitude;
+        String latLng = latitude+","+longitude;
 
 
             this.disposable = NearbySearchStream.streamFetchNearbySearch(latLng)
@@ -187,7 +161,7 @@ public class ListFragment extends Fragment {
 
                     });
         }
-    }
+
 
 
     private void disposeWhenDestroy() {
@@ -200,12 +174,5 @@ public class ListFragment extends Fragment {
         this.mAdapter.notifyDataSetChanged();
     }
 
-    public double getLatitude(){
-        return latitude;
-    }
-
-    public double getLongitude(){
-        return longitude;
-    }
 
 }

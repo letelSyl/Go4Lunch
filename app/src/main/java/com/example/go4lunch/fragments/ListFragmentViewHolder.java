@@ -36,9 +36,6 @@ public class ListFragmentViewHolder extends RecyclerView.ViewHolder {
 
     public void updateWithNearbySearch(Result result, double curLat, double curLng){
 
-// calcul distance Ltng
-
-
         float[] results = new float[1];
         Location.distanceBetween(curLat, curLng, result.getGeometry().getLocation().getLat(), result.getGeometry().getLocation().getLng(), results);
         float distance = results[0];
@@ -47,14 +44,20 @@ public class ListFragmentViewHolder extends RecyclerView.ViewHolder {
         df.setRoundingMode(RoundingMode.HALF_UP);
         String roundedDistance = df.format(distance);
 
-        ListFragmentBinding.bind(itemView).fragmentPageItemDistance.setText(roundedDistance+ "m");
+        ListFragmentBinding.bind(itemView).fragmentPageItemDistance.setText(roundedDistance + "m");
 
         ListFragmentBinding.bind(itemView).fragmentPageItemName.setText(result.getName());
         ListFragmentBinding.bind(itemView).fragmentPageItemAddress.setText(result.getVicinity());
-        if (result.getOpeningHours().getOpenNow().booleanValue() == true) {
-            ListFragmentBinding.bind(itemView).fragmentPageItemClosureHour.setText("Open");
+        if (result.getOpeningHours() == null) {
+            ListFragmentBinding.bind(itemView).fragmentPageItemClosureHour.setText("N/A");
         }else{
-            ListFragmentBinding.bind(itemView).fragmentPageItemClosureHour.setText("Closed");
+            if (result.getOpeningHours().getOpenNow()) {
+                ListFragmentBinding.bind(itemView).fragmentPageItemClosureHour.setText("Open");
+            } else {
+                ListFragmentBinding.bind(itemView).fragmentPageItemClosureHour.setText("Closed");
+
+            }
+
 
         }
         ListFragmentBinding.bind(itemView).ratingBar.setRating(result.getRating().byteValue());

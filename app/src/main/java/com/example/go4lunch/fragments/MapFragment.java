@@ -1,5 +1,6 @@
 package com.example.go4lunch.fragments;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.go4lunch.MainActivity;
 import com.example.go4lunch.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -39,6 +41,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private MapViewModel mViewModel;
@@ -50,7 +53,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     LocationManager locationManager = null;
     FusedLocationProviderClient providerClient;
-    private String fournisseur;
 
     private LocationListener locationListener;
     private double latitude;
@@ -135,42 +137,30 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         mGoogleMap = googleMap;
 
+        latitude = MainActivity.getLatitude();
+        longitude = MainActivity.getLongitude();
 
 
-        if (ActivityCompat.checkSelfPermission(Objects.requireNonNull(getContext()),
-                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
-            int REQUEST_LOCATION = 1;
-            ActivityCompat.requestPermissions(Objects.requireNonNull(getActivity()),
-                    new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                            android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    REQUEST_LOCATION);
-        } else {
-// For showing a move to my location button
-
-            Criteria criteria = new Criteria();
-            Location location = locationManager.getLastKnownLocation(Objects.requireNonNull(locationManager
-                    .getBestProvider(criteria, false)));
-
-            latitude = location.getLatitude();
-            longitude = location.getLongitude();
-        }
         locationListener = new LocationListener() {
             @Override
             public void onStatusChanged(String provider, int status,
                                         Bundle extras) {
             }
+
             @Override
             public void onProviderEnabled(String provider) {
             }
+
             @Override
             public void onProviderDisabled(String provider) {
             }
+
             @Override
             public void onLocationChanged(Location location) {
                 double latitude = location.getLatitude();
                 double longitude = location.getLongitude();
                 LatLng l = new LatLng(latitude, longitude);
-               // saveCurrentLocation(l);<
+                // saveCurrentLocation(l);<
                 float zoom = googleMap.getCameraPosition().zoom;
                 if (zoom < 15) {
                     zoom = 15;
@@ -182,7 +172,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
         };
 
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+           return;
+        }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 5, locationListener);
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 5, locationListener);
 
 
@@ -190,31 +187,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
 
 
-     /*   providerClient.getLastLocation()
-                .addOnSuccessListener((Executor) this, new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        // Got last known location. In some rare situations this can be null.
-                        if (location != null) {
-                            // Logic to handle location object
-                        }
-                    }
-                });*/
-
-           /* providerClient.getLastLocation()
-                    .addOnSuccessListener((Executor) this, new OnSuccessListener<Location>() {
-                        @Override
-                        public void onSuccess(Location location) {
-                            // Got last known location. In some rare situations this can be null.
-                            if (location != null) {
-                                // Logic to handle location object
-                                 if (location != null) {
-
-
-                                        }
-                            }
-                        }
-                    });*/
 
 
     }

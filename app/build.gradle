@@ -17,7 +17,10 @@ android {
 
         multiDexEnabled true
         vectorDrawables.useSupportLibrary true
-    }
+
+
+
+        buildConfigField "String", "API_KEY", apiKey    }
 
     viewBinding {
         enabled = true
@@ -28,13 +31,18 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+
         }
+
 
         compileOptions {
             targetCompatibility 1.8
             sourceCompatibility 1.8
         }
-    }
+
+
+}
 
 
 }

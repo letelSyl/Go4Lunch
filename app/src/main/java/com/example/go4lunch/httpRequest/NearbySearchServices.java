@@ -5,6 +5,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 
+import com.example.go4lunch.BuildConfig;
 import com.example.go4lunch.models.NearbySearch;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -19,7 +20,7 @@ import retrofit2.http.Query;
 
 public interface NearbySearchServices {
 
-    @GET("nearbysearch/json?rankby=distance&type=restaurant&keyword=cruise&key=AIzaSyAkMT8gS5CHox_UV6NpVJ7NQa2q9R00qFw")
+    @GET("nearbysearch/json?rankby=distance&type=restaurant&keyword=cruise&key=" + BuildConfig.API_KEY)
     Observable<NearbySearch> getResults(@Query("location") String latLng);
 
     Retrofit retrofit = RetrofitBuilder.retrofit;

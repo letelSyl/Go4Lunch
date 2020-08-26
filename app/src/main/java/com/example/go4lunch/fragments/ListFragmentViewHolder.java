@@ -1,23 +1,15 @@
 package com.example.go4lunch.fragments;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationManager;
-import android.renderscript.Sampler;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.example.go4lunch.databinding.ListFragmentBinding;
-import com.example.go4lunch.models.Result;
+import com.example.go4lunch.models.nearbySearch.Result;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.util.Objects;
 
-import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ListFragmentViewHolder extends RecyclerView.ViewHolder {

@@ -1,7 +1,6 @@
 package com.example.go4lunch.httpRequest;
 
-import com.example.go4lunch.models.NearbySearch;
-import com.google.android.gms.maps.model.LatLng;
+import com.example.go4lunch.models.nearbySearch.NearbySearch;
 
 import java.util.concurrent.TimeUnit;
 

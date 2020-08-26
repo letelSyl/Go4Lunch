@@ -1,4 +1,4 @@
-package com.example.go4lunch.models;
+package com.example.go4lunch.models.details;
 
 import java.util.List;
 import com.google.gson.annotations.Expose;

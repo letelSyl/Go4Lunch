@@ -1,5 +1,7 @@
-package com.example.go4lunch.models;
+package com.example.go4lunch.models.nearbySearch;
 
+import com.example.go4lunch.models.nearbySearch.Northeast;
+import com.example.go4lunch.models.nearbySearch.Southwest;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

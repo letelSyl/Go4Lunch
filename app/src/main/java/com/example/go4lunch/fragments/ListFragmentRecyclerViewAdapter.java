@@ -11,13 +11,11 @@ import android.widget.Toast;
 
 import com.example.go4lunch.R;
 //import com.example.go4lunch.fragments.dummy.ListFragmentDummyContent.DummyItem;
-import com.example.go4lunch.models.Result;
+import com.example.go4lunch.models.nearbySearch.Result;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-
-import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 
 public class ListFragmentRecyclerViewAdapter extends RecyclerView.Adapter<ListFragmentViewHolder> {

@@ -1,21 +1,12 @@
 package com.example.go4lunch.httpRequest;
 
-import android.content.Context;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationManager;
-
 import com.example.go4lunch.BuildConfig;
-import com.example.go4lunch.models.NearbySearch;
-import com.google.android.gms.maps.model.LatLng;
-
-import java.util.Objects;
+import com.example.go4lunch.models.nearbySearch.NearbySearch;
 
 import io.reactivex.Observable;
 
 import retrofit2.Retrofit;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface NearbySearchServices {

@@ -1,4 +1,4 @@
-package com.example.go4lunch.models;
+package com.example.go4lunch.models.details;
 
 import java.util.List;
 import com.google.gson.annotations.Expose;
@@ -6,24 +6,33 @@ import com.google.gson.annotations.SerializedName;
 
 public class Result {
 
+    @SerializedName("address_components")
+    @Expose
+    private List<AddressComponent> addressComponents = null;
+    @SerializedName("adr_address")
+    @Expose
+    private String adrAddress;
     @SerializedName("business_status")
     @Expose
     private String businessStatus;
+    @SerializedName("formatted_address")
+    @Expose
+    private String formattedAddress;
+    @SerializedName("formatted_phone_number")
+    @Expose
+    private String formattedPhoneNumber;
     @SerializedName("geometry")
     @Expose
     private Geometry geometry;
     @SerializedName("icon")
     @Expose
     private String icon;
-    @SerializedName("id")
+    @SerializedName("international_phone_number")
     @Expose
-    private String id;
+    private String internationalPhoneNumber;
     @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("opening_hours")
-    @Expose
-    private OpeningHours openingHours;
     @SerializedName("photos")
     @Expose
     private List<Photo> photos = null;
@@ -33,30 +42,49 @@ public class Result {
     @SerializedName("plus_code")
     @Expose
     private PlusCode plusCode;
-    @SerializedName("price_level")
-    @Expose
-    private Integer priceLevel;
     @SerializedName("rating")
     @Expose
     private Double rating;
     @SerializedName("reference")
     @Expose
     private String reference;
-    @SerializedName("scope")
+    @SerializedName("reviews")
     @Expose
-    private String scope;
+    private List<Review> reviews = null;
     @SerializedName("types")
     @Expose
     private List<String> types = null;
+    @SerializedName("url")
+    @Expose
+    private String url;
     @SerializedName("user_ratings_total")
     @Expose
     private Integer userRatingsTotal;
+    @SerializedName("utc_offset")
+    @Expose
+    private Integer utcOffset;
     @SerializedName("vicinity")
     @Expose
     private String vicinity;
-    @SerializedName("permanently_closed")
+    @SerializedName("website")
     @Expose
-    private Boolean permanentlyClosed;
+    private String website;
+
+    public List<AddressComponent> getAddressComponents() {
+        return addressComponents;
+    }
+
+    public void setAddressComponents(List<AddressComponent> addressComponents) {
+        this.addressComponents = addressComponents;
+    }
+
+    public String getAdrAddress() {
+        return adrAddress;
+    }
+
+    public void setAdrAddress(String adrAddress) {
+        this.adrAddress = adrAddress;
+    }
 
     public String getBusinessStatus() {
         return businessStatus;
@@ -64,6 +92,22 @@ public class Result {
 
     public void setBusinessStatus(String businessStatus) {
         this.businessStatus = businessStatus;
+    }
+
+    public String getFormattedAddress() {
+        return formattedAddress;
+    }
+
+    public void setFormattedAddress(String formattedAddress) {
+        this.formattedAddress = formattedAddress;
+    }
+
+    public String getFormattedPhoneNumber() {
+        return formattedPhoneNumber;
+    }
+
+    public void setFormattedPhoneNumber(String formattedPhoneNumber) {
+        this.formattedPhoneNumber = formattedPhoneNumber;
     }
 
     public Geometry getGeometry() {
@@ -82,12 +126,12 @@ public class Result {
         this.icon = icon;
     }
 
-    public String getId() {
-        return id;
+    public String getInternationalPhoneNumber() {
+        return internationalPhoneNumber;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setInternationalPhoneNumber(String internationalPhoneNumber) {
+        this.internationalPhoneNumber = internationalPhoneNumber;
     }
 
     public String getName() {
@@ -96,14 +140,6 @@ public class Result {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public OpeningHours getOpeningHours() {
-        return openingHours;
-    }
-
-    public void setOpeningHours(OpeningHours openingHours) {
-        this.openingHours = openingHours;
     }
 
     public List<Photo> getPhotos() {
@@ -130,14 +166,6 @@ public class Result {
         this.plusCode = plusCode;
     }
 
-    public Integer getPriceLevel() {
-        return priceLevel;
-    }
-
-    public void setPriceLevel(Integer priceLevel) {
-        this.priceLevel = priceLevel;
-    }
-
     public Double getRating() {
         return rating;
     }
@@ -154,12 +182,12 @@ public class Result {
         this.reference = reference;
     }
 
-    public String getScope() {
-        return scope;
+    public List<Review> getReviews() {
+        return reviews;
     }
 
-    public void setScope(String scope) {
-        this.scope = scope;
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 
     public List<String> getTypes() {
@@ -170,12 +198,28 @@ public class Result {
         this.types = types;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     public Integer getUserRatingsTotal() {
         return userRatingsTotal;
     }
 
     public void setUserRatingsTotal(Integer userRatingsTotal) {
         this.userRatingsTotal = userRatingsTotal;
+    }
+
+    public Integer getUtcOffset() {
+        return utcOffset;
+    }
+
+    public void setUtcOffset(Integer utcOffset) {
+        this.utcOffset = utcOffset;
     }
 
     public String getVicinity() {
@@ -186,12 +230,12 @@ public class Result {
         this.vicinity = vicinity;
     }
 
-    public Boolean getPermanentlyClosed() {
-        return permanentlyClosed;
+    public String getWebsite() {
+        return website;
     }
 
-    public void setPermanentlyClosed(Boolean permanentlyClosed) {
-        this.permanentlyClosed = permanentlyClosed;
+    public void setWebsite(String website) {
+        this.website = website;
     }
 
 }

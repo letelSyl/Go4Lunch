@@ -1,4 +1,4 @@
-package com.example.go4lunch.models;
+package com.example.go4lunch.models.details;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -29,3 +29,4 @@ public class Location {
     }
 
 }
+

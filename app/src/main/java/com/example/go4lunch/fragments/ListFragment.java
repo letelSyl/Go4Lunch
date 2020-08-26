@@ -1,10 +1,6 @@
 package com.example.go4lunch.fragments;
 
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,15 +12,12 @@ import com.example.go4lunch.R;
 import com.example.go4lunch.databinding.ListFragmentBinding;
 import com.example.go4lunch.databinding.ListFragmentItemListBinding;
 import com.example.go4lunch.httpRequest.NearbySearchStream;
-import com.example.go4lunch.models.NearbySearch;
-import com.example.go4lunch.models.Result;
-import com.google.android.gms.maps.model.LatLng;
+import com.example.go4lunch.models.nearbySearch.NearbySearch;
+import com.example.go4lunch.models.nearbySearch.Result;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;

@@ -52,7 +52,7 @@ public class ListFragmentViewHolder extends RecyclerView.ViewHolder {
 
 
         }
-        ListFragmentBinding.bind(itemView).ratingBar.setRating(result.getRating().byteValue());
+        ListFragmentBinding.bind(itemView).ratingBar.setRating(result.getRating().byteValue()*3/5);
 
         if (result.getPhotos() != null && result.getPhotos().size() != 0){
             this.picUrl = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="+result.getPhotos().get(0).getPhotoReference()+"&key=AIzaSyAkMT8gS5CHox_UV6NpVJ7NQa2q9R00qFw";

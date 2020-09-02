@@ -30,4 +30,13 @@
     <string name="bottom_navigation_menu_workmates">Workmates</string>
     <string name="title_activity_maps">Map</string>
 
+    <string name="title_activity_website">WebsiteActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="restaurant_name">Restaurant Name</string>
+    <string name="n_street">N° street</string>
+    <string name="call">CALL</string>
+    <string name="like">LIKE</string>
+    <string name="website">WEBSITE</string>
+
 </resources>

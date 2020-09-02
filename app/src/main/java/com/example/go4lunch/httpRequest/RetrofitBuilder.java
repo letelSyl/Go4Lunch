@@ -16,14 +16,16 @@ public interface RetrofitBuilder{
             .addInterceptor(logging)
             .build();
 
+    String BASE_URL = "https://maps.googleapis.com/maps/api/place/";
 
     Retrofit retrofit = new Retrofit.Builder()
 
-            .baseUrl("https://maps.googleapis.com/maps/api/place/")
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .client(client)
             .build();
+
 
 
 

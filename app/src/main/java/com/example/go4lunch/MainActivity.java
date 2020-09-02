@@ -7,6 +7,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -21,6 +22,8 @@ import com.example.go4lunch.databinding.ListFragmentBinding;
 import com.example.go4lunch.fragments.ListFragment;
 import com.example.go4lunch.fragments.MapFragment;
 import com.example.go4lunch.fragments.WorkmateFragment;
+import com.example.go4lunch.httpRequest.NearbySearchStream;
+import com.example.go4lunch.models.nearbySearch.NearbySearch;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
@@ -42,7 +45,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import io.reactivex.observers.DisposableObserver;
+import okhttp3.logging.HttpLoggingInterceptor;
 
+import static com.example.go4lunch.httpRequest.RetrofitBuilder.logging;
 import static java.security.AccessController.getContext;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -54,8 +60,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private BottomNavigationView bottomNavigationView;
 
-    private FrameLayout mapFragmentBinding;
-    private ListFragmentBinding listFragmentBinding;
 
 //  private ActionBar ab;
     private DrawerLayout drawerLayout;
@@ -74,19 +78,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static double longitude;
 
 
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
-    }
-    @Override
-    protected void onStart() {
-
-        super.onStart();
         if(isCurrentUserLogged()){
 
             binding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -111,6 +105,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         getCurrentLocation();
+
+
+    }
+    @Override
+    protected void onStart() {
+
+        super.onStart();
+
     }
 
     @Override
@@ -128,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void configureFragment(){
 
         // Initialize the SDK
-        Places.initialize(getApplicationContext(), "AIzaSyAkMT8gS5CHox_UV6NpVJ7NQa2q9R00qFw");
+        Places.initialize(getApplicationContext(),BuildConfig.API_KEY);
 
         // Create a new PlacesClient instance
         PlacesClient placesClient = Places.createClient(this);
@@ -350,19 +352,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Criteria criteria = new Criteria();
             android.location.Location location = locationManager.getLastKnownLocation(Objects.requireNonNull(locationManager
                     .getBestProvider(criteria, false)));
-            latitude = location.getLatitude();
-            longitude = location.getLongitude();
+            if (location !=  null) {
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+            }
         }
 
 
 
     }
 
+
+
     public static double getLatitude(){
         return latitude;
     }
 
     public static double getLongitude(){
+
         return longitude;
     }
 

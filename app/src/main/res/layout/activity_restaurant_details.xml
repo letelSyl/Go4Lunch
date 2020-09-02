@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RestaurantDetailsActivity">
+
+    <ImageView
+        android:id="@+id/photo"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/fui_auth_method_button_width"
+        android:maxHeight="@dimen/browser_actions_context_menu_max_width"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/resto_flou2"
+        app:layout_constraintBottom_toTopOf="@+id/name_rating_Layout"
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:clickable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/photo"
+        app:layout_constraintBottom_toTopOf="@id/name_rating_Layout"
+        app:srcCompat="@drawable/ic_offline_pin_green_24dp"
+        android:focusable="true" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/name_rating_Layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toTopOf="@+id/address"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/photo">
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:background="@color/colorPrimaryDark"
+            android:gravity="start"
+            android:padding="8sp"
+            android:text="@string/restaurant_name"
+            android:textColor="@color/colorAccent"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/ratingBar2"
+            app:layout_constraintEnd_toStartOf="@+id/ratingBar2"
+            tools:text="Restaurant Name" />
+
+        <RatingBar
+            android:id="@+id/ratingBar2"
+            style="@style/Widget.AppCompat.RatingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryDark"
+            android:clickable="false"
+            android:foregroundGravity="left"
+            android:numStars="3"
+            android:progressTint="@color/fui_bgAnonymous"
+            android:rating="1"
+            android:scaleX="0.4"
+            android:scaleY="0.4"
+            android:secondaryProgressTint="@color/colorPrimaryDark"
+            android:stepSize="0.5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/name" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/n_street"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
+        android:gravity="left"
+        android:paddingStart="8dp"
+        android:paddingBottom="32dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name_rating_Layout"
+        tools:text="N° street"
+        />
+
+    <Button
+        android:id="@+id/callButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/likeButton"
+        app:layout_constraintTop_toBottomOf="@+id/address"
+        android:drawableTop="@drawable/ic_phone_30dp"
+        android:text="@string/call"
+        android:textSize="16sp"
+        android:textColor="@color/colorPrimaryDark"
+        android:background="@color/colorAccent"
+        android:clickable="true"
+        android:focusable="true" />
+
+    <Button
+        android:id="@+id/likeButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        app:layout_constraintStart_toEndOf="@+id/callButton"
+        app:layout_constraintEnd_toStartOf="@+id/websiteButton"
+        app:layout_constraintTop_toBottomOf="@+id/address"
+        android:drawableTop="@drawable/ic_star_30dp"
+        android:text="@string/like"
+        android:textSize="16sp"
+        android:textColor="@color/colorPrimaryDark"
+        android:background="@color/colorAccent"
+        android:clickable="true"
+        android:focusable="true" />
+
+    <Button
+        android:id="@+id/websiteButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        app:layout_constraintStart_toEndOf="@+id/likeButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/address"
+        android:drawableTop="@drawable/ic_public_30dp"
+        android:text="@string/website"
+        android:textSize="16sp"
+        android:textColor="@color/colorPrimaryDark"
+        android:background="@color/colorAccent"
+        android:clickable="true"
+        android:focusable="true" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list"
+        layout="@layout/workmate_fragment_item_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/likeButton"
+        android:padding="16dp"
+
+        tools:context=".fragments.WorkmateFragment"
+        tools:listitem="@layout/workmate_fragment"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

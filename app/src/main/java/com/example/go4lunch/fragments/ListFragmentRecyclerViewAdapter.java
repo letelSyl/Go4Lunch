@@ -4,13 +4,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.annotations.NonNull;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.go4lunch.R;
 //import com.example.go4lunch.fragments.dummy.ListFragmentDummyContent.DummyItem;
+import com.example.go4lunch.RestaurantDetailsActivity;
 import com.example.go4lunch.models.nearbySearch.Result;
 
 import org.jetbrains.annotations.NotNull;
@@ -48,11 +49,14 @@ public class ListFragmentRecyclerViewAdapter extends RecyclerView.Adapter<ListFr
 
         viewHolder.updateWithNearbySearch(result, curLat, curLng);
 
+       String placeId = result.getPlaceId();
+
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "CLICK !!!",  Toast.LENGTH_LONG).show();
-
+                Intent details = new Intent (context, RestaurantDetailsActivity.class);
+                details.putExtra("placeId", placeId);
+                context.startActivity(details);
             }
         });
 

@@ -18,8 +18,10 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.go4lunch.MainActivity;
+import com.example.go4lunch.MainActivityViewModel;
 import com.example.go4lunch.R;
 import com.example.go4lunch.RestaurantDetailsActivity;
+import com.example.go4lunch.models.nearbySearch.Result;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -34,7 +36,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Executor;
 
@@ -46,9 +52,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 
-public class MapFragment extends Fragment implements OnMapReadyCallback {
+public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
-    private MapViewModel mViewModel;
 
 
     private GoogleMap mGoogleMap;
@@ -62,6 +67,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private double latitude;
     private double longitude;
 
+    private MainActivityViewModel mainActivityViewModel;
+
+    private List<Result> mResults = new ArrayList<>();
+    private Map<Marker, Result> allMarkersMap = new HashMap<Marker, Result>();
+
+
+
     public static MapFragment newInstance() {
 
         return new MapFragment();
@@ -70,7 +82,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(MapViewModel.class);
+
+        //  mViewModel = new ViewModelProvider(this).get(MapViewModel.class);
         providerClient = LocationServices.getFusedLocationProviderClient(getContext());
 
 
@@ -103,6 +116,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 alert();
             }
         }
+        mainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
+
 
         return mView;
     }
@@ -192,7 +207,36 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mGoogleMap.setMyLocationEnabled(true);
         mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
 
+        mainActivityViewModel.getNearBySearchRepository(latitude, longitude).observe(getViewLifecycleOwner(),results ->{
+
+            if (results != null){
+                for (Result result:results) {
+                    Marker marker = mGoogleMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(result.getGeometry().getLocation().getLat(),result.getGeometry().getLocation().getLng()))
+                    .title(result.getName()));
+                    allMarkersMap.put(marker,result);
+
+
+
+                }
+
+
+            }
+        });
+
+        mGoogleMap.setOnMarkerClickListener(this);
+
     }
 
 
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        Result result = allMarkersMap.get(marker);
+        String markerId = result.getPlaceId();
+        Intent details = new Intent (getContext(), RestaurantDetailsActivity.class);
+        details.putExtra("placeId", markerId);
+        getContext().startActivity(details);
+
+        return false;
+    }
 }

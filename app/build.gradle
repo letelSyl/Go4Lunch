@@ -19,6 +19,7 @@ android {
         vectorDrawables.useSupportLibrary true
 
 
+
         buildConfigField "String", "API_KEY", apiKey
     }
 
@@ -44,6 +45,10 @@ android {
 
     }
 
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
 
 }
 
@@ -82,7 +87,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics:17.5.0'
     implementation 'com.google.firebase:firebase-core:17.5.0'
     implementation 'com.google.firebase:firebase-auth:19.3.2'
-    implementation 'com.google.firebase:firebase-firestore:21.5.0'
+    implementation 'com.google.firebase:firebase-firestore:21.6.0'
     implementation 'com.google.firebase:firebase-messaging:20.2.4'
 
 
@@ -96,6 +101,8 @@ dependencies {
 
     // Adds library used to manipulate the json format more easily
     implementation 'com.google.code.gson:gson:2.8.6'
+
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
 
 
     implementation 'com.squareup.retrofit2:retrofit:2.6.4'

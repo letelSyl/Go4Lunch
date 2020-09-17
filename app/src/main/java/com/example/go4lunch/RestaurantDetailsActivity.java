@@ -1,45 +1,31 @@
 package com.example.go4lunch;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import okhttp3.logging.HttpLoggingInterceptor;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.go4lunch.databinding.ActivityRestaurantDetailsBinding;
-import com.example.go4lunch.databinding.ListFragmentBinding;
 import com.example.go4lunch.fragments.WorkmateFragmentRecyclerViewAdapter;
 import com.example.go4lunch.fragments.dummy.WorkmateFragmentDummyContent;
 import com.example.go4lunch.httpRequest.DetailsStream;
-import com.example.go4lunch.httpRequest.NearbySearchStream;
 import com.example.go4lunch.models.details.Details;
 import com.example.go4lunch.models.details.Result;
-import com.example.go4lunch.models.nearbySearch.NearbySearch;
-
-import java.util.Objects;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import static com.example.go4lunch.httpRequest.RetrofitBuilder.logging;
 
@@ -135,19 +121,13 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
         binding.callButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ContextCompat.checkSelfPermission(RestaurantDetailsActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                int REQUEST_CALL = 1;
-                ActivityCompat.requestPermissions(Objects.requireNonNull(RestaurantDetailsActivity.this),
-                        new String[]{Manifest.permission.CALL_PHONE},
-                        REQUEST_CALL);
-                }else {
-                    if (result.getInternationalPhoneNumber() != null) {
 
-                        startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel: " + result.getInternationalPhoneNumber())));
-                    } else {
-                        Toast.makeText(RestaurantDetailsActivity.this, "No phone number registered !", Toast.LENGTH_LONG).show();
+                if (result.getInternationalPhoneNumber() != null) {
 
-                    }
+                    startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel: " + result.getInternationalPhoneNumber())));
+                } else {
+                    Toast.makeText(RestaurantDetailsActivity.this, "No phone number registered !", Toast.LENGTH_LONG).show();
+
                 }
             }
         });
@@ -173,11 +153,19 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
                 }
             }
         });
-
-        binding.floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            FloatingActionButton floatingActionButton = binding.floatingActionButton;
+            floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            boolean isClicked = false;
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
-                Toast.makeText(RestaurantDetailsActivity.this, "You've choose this restaurant",Toast.LENGTH_LONG).show();
+                if (!isClicked) {
+                    floatingActionButton.setImageResource(R.drawable.ic_offline_pin_green_24dp);
+                    isClicked = true;
+                }else {
+                    floatingActionButton.setImageResource(R.drawable.ic_add_circle_outline_black_24dp);
+                    isClicked = false;
+                }
             }
         });
     }

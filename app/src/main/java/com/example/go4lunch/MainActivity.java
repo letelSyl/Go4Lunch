@@ -19,12 +19,14 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.go4lunch.databinding.ActivityMainBinding;
 import com.example.go4lunch.databinding.ListFragmentBinding;
+import com.example.go4lunch.firestore.UserHelper;
 import com.example.go4lunch.fragments.ListFragment;
 import com.example.go4lunch.fragments.MapFragment;
 import com.example.go4lunch.fragments.WorkmateFragment;
 import com.example.go4lunch.httpRequest.NearbySearchStream;
 import com.example.go4lunch.models.nearbySearch.NearbySearch;
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.net.PlacesClient;
@@ -74,8 +76,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ListFragment mListFragment = new ListFragment();
     private WorkmateFragment mWorkmateFragment = new WorkmateFragment();
 
-    private static double latitude;
-    private static double longitude;
+    private static double latitude;//
+                                     // à metre dans le view model*/
+    private static double longitude;//
 
 
     @Override
@@ -308,6 +311,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected Boolean isCurrentUserLogged(){
         return (this.getCurrentUser() != null);
     }
+
+    protected OnFailureListener onFailureListener(){
+        return new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(),getString(R.string.error_unknown_error),Toast.LENGTH_LONG).show();
+            }
+        };
+    }
+
+    private void createUserInFirestore(){
+
+        if (this.getCurrentUser() != null){
+
+            String urlPicture = (this.getCurrentUser().getPhotoUrl() != null) ? this.getCurrentUser().getPhotoUrl().toString() : null;
+            String username = this.getCurrentUser().getDisplayName();
+            String uid = this.getCurrentUser().getUid();
+
+            UserHelper.createUser(uid, username, urlPicture).addOnFailureListener(this.onFailureListener());
+        }
+    }
+
+
 
     private void signOutUserFromFirebase(){
         AuthUI.getInstance()

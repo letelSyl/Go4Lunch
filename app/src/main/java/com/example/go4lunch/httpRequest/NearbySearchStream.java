@@ -10,13 +10,4 @@ import io.reactivex.schedulers.Schedulers;
 
 public class NearbySearchStream {
 
-    public static Observable<NearbySearch> streamFetchNearbySearch(String latLng) {
-
-        NearbySearchServices nearbySearchServices = NearbySearchServices.retrofit.create(NearbySearchServices.class);
-        return nearbySearchServices.getResults(latLng)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .timeout(10, TimeUnit.SECONDS);
-
-    }
 }

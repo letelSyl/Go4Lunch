@@ -8,17 +8,22 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.go4lunch.MainActivity;
+import com.example.go4lunch.MainActivityViewModel;
 import com.example.go4lunch.R;
 import com.example.go4lunch.databinding.ListFragmentBinding;
 import com.example.go4lunch.databinding.ListFragmentItemListBinding;
 import com.example.go4lunch.httpRequest.NearbySearchStream;
 import com.example.go4lunch.models.nearbySearch.NearbySearch;
 import com.example.go4lunch.models.nearbySearch.Result;
+import com.example.go4lunch.repository.NearBySearchRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -50,8 +55,13 @@ public class ListFragment extends Fragment {
     private List<Result> mResults = new ArrayList<>();
     private ListFragmentRecyclerViewAdapter mAdapter;
 
-    private double latitude;
-    private double longitude;
+    private MainActivityViewModel mainActivityViewModel;
+
+    private MutableLiveData<List<Result>> mutableLiveData;
+
+    private static double latitude;
+    private static double longitude;
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -91,8 +101,11 @@ public class ListFragment extends Fragment {
 
       // position= getArguments().getInt(KEY_POSITION,-1);
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-        this.executeHttpRequest();
-        //this.configureRecyclerView();+
+
+
+        latitude = MainActivity.getLatitude();
+        longitude = MainActivity.getLongitude();
+        // this.executeHttpRequest();
 
 
         // Set the adapter
@@ -109,6 +122,14 @@ public class ListFragment extends Fragment {
         }
 
 
+        mainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
+
+        mainActivityViewModel.getNearBySearchRepository(latitude, longitude).observe(getViewLifecycleOwner(),results ->{
+
+           if (results != null){
+               updateUIWithNearbySearch(results);
+           }
+        });
 
 
         return view;
@@ -120,49 +141,13 @@ public class ListFragment extends Fragment {
         this.disposeWhenDestroy();
     }
 
-
-    private void executeHttpRequest(){
-
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-
-
-        latitude = MainActivity.getLatitude();
-        longitude = MainActivity.getLongitude();
-
-        String latLng = latitude+","+longitude;
-
-
-            this.disposable = NearbySearchStream.streamFetchNearbySearch(latLng)
-                    .subscribeWith(new DisposableObserver<NearbySearch>() {
-
-                        @Override
-                        public void onNext(NearbySearch nearbySearch) {
-                            Log.e("TAG", "On Next");
-                            updateUIWithNearbySearch(nearbySearch.getResults());
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            Log.e("TAG", "On Error" + Log.getStackTraceString(e));
-                        }
-
-                        @Override
-                        public void onComplete() {
-                            Log.e("TAG", "On Complete !!");
-                        }
-
-                    });
-        }
-
-
-
     private void disposeWhenDestroy() {
         if (this.disposable != null && !this.disposable.isDisposed()) this.disposable.dispose();
     }
 
 
     private void updateUIWithNearbySearch(List<Result> results){
+        this.mResults.clear();
         this.mResults.addAll(results);
         this.mAdapter.notifyDataSetChanged();
     }

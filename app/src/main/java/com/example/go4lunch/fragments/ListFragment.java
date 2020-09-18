@@ -2,20 +2,16 @@ package com.example.go4lunch.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.go4lunch.MainActivity;
-import com.example.go4lunch.MainActivityViewModel;
+import com.example.go4lunch.RestaurantsViewModel;
 import com.example.go4lunch.R;
 import com.example.go4lunch.databinding.ListFragmentBinding;
 import com.example.go4lunch.databinding.ListFragmentItemListBinding;
-import com.example.go4lunch.httpRequest.NearbySearchStream;
-import com.example.go4lunch.models.nearbySearch.NearbySearch;
 import com.example.go4lunch.models.nearbySearch.Result;
-import com.example.go4lunch.repository.NearBySearchRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +19,10 @@ import java.util.List;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.observers.DisposableObserver;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 import static com.example.go4lunch.httpRequest.RetrofitBuilder.logging;
@@ -55,7 +49,7 @@ public class ListFragment extends Fragment {
     private List<Result> mResults = new ArrayList<>();
     private ListFragmentRecyclerViewAdapter mAdapter;
 
-    private MainActivityViewModel mainActivityViewModel;
+    private RestaurantsViewModel restaurantsViewModel;
 
     private MutableLiveData<List<Result>> mutableLiveData;
 
@@ -122,9 +116,9 @@ public class ListFragment extends Fragment {
         }
 
 
-        mainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
+        restaurantsViewModel = new ViewModelProvider(this).get(RestaurantsViewModel.class);
 
-        mainActivityViewModel.getNearBySearchRepository(latitude, longitude).observe(getViewLifecycleOwner(),results ->{
+        restaurantsViewModel.getNearBySearchRepository(latitude, longitude).observe(getViewLifecycleOwner(), results ->{
 
            if (results != null){
                updateUIWithNearbySearch(results);

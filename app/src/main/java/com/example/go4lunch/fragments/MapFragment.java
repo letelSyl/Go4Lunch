@@ -2,23 +2,19 @@ package com.example.go4lunch.fragments;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.go4lunch.MainActivity;
-import com.example.go4lunch.MainActivityViewModel;
+import com.example.go4lunch.RestaurantsViewModel;
 import com.example.go4lunch.R;
 import com.example.go4lunch.RestaurantDetailsActivity;
 import com.example.go4lunch.models.nearbySearch.Result;
@@ -33,16 +29,12 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.Executor;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -67,7 +59,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     private double latitude;
     private double longitude;
 
-    private MainActivityViewModel mainActivityViewModel;
+    private RestaurantsViewModel restaurantsViewModel;
 
     private List<Result> mResults = new ArrayList<>();
     private Map<Marker, Result> allMarkersMap = new HashMap<Marker, Result>();
@@ -116,7 +108,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                 alert();
             }
         }
-        mainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
+        restaurantsViewModel = new ViewModelProvider(this).get(RestaurantsViewModel.class);
 
 
         return mView;
@@ -207,7 +199,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         mGoogleMap.setMyLocationEnabled(true);
         mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
 
-        mainActivityViewModel.getNearBySearchRepository(latitude, longitude).observe(getViewLifecycleOwner(),results ->{
+        restaurantsViewModel.getNearBySearchRepository(latitude, longitude).observe(getViewLifecycleOwner(), results ->{
 
             if (results != null){
                 for (Result result:results) {

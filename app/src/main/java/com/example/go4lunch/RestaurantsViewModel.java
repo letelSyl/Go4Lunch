@@ -15,7 +15,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class MainActivityViewModel extends ViewModel {
+public class RestaurantsViewModel extends ViewModel {
 
     private final NearBySearchRepository repository;
 
@@ -24,7 +24,7 @@ public class MainActivityViewModel extends ViewModel {
 
 
 
-    public MainActivityViewModel(){
+    public RestaurantsViewModel(){
         super();
         repository = new NearBySearchRepository();
     }

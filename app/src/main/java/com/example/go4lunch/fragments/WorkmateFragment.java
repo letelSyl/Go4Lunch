@@ -7,9 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.go4lunch.R;
-import com.example.go4lunch.fragments.dummy.WorkmateFragmentDummyContent;
+import com.example.go4lunch.UsersViewModel;
+import com.example.go4lunch.models.User.User;
+import com.google.firebase.firestore.CollectionReference;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,6 +30,15 @@ public class WorkmateFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
+
+
+    private UsersViewModel usersViewModel;
+
+    private MutableLiveData<CollectionReference> mutableLiveData;
+
+    private List<User> mUsers = new ArrayList<>();
+
+    private WorkmateFragmentRecyclerViewAdapter mAdapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -64,9 +80,26 @@ public class WorkmateFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new WorkmateFragmentRecyclerViewAdapter(WorkmateFragmentDummyContent.ITEMS));
+            this.mAdapter = new WorkmateFragmentRecyclerViewAdapter(this.mUsers);
+            recyclerView.setAdapter(this.mAdapter);
         }
+
+        usersViewModel = new ViewModelProvider(this).get(UsersViewModel.class);
+
+        usersViewModel.getUserRepository().observe(getViewLifecycleOwner(), users ->{
+
+            if (users != null){
+                updateUIWithUsers(users);
+            }
+        });
+
+
         return view;
     }
 
+    public void updateUIWithUsers(List<User> users) {
+        this.mUsers.clear();
+        this.mUsers.addAll(users);
+        this.mAdapter.notifyDataSetChanged();
+    }
 }

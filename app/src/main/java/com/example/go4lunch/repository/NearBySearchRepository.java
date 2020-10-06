@@ -1,6 +1,5 @@
 package com.example.go4lunch.repository;
 
-import com.example.go4lunch.MainActivity;
 import com.example.go4lunch.httpRequest.NearbySearchServices;
 import com.example.go4lunch.httpRequest.RetrofitBuilder;
 import com.example.go4lunch.models.nearbySearch.NearbySearch;
@@ -21,15 +20,15 @@ public class NearBySearchRepository {
 
 
     private MutableLiveData<List<Result>>  results = new MutableLiveData<>();
-    private static NearBySearchRepository newsRepository;
+    private static NearBySearchRepository nearBySearchRepository;
 
     private static NearbySearchServices myInterface;
 
     public static NearBySearchRepository getInstance(){
-        if (newsRepository == null){
-            newsRepository = new NearBySearchRepository();
+        if (nearBySearchRepository == null){
+            nearBySearchRepository = new NearBySearchRepository();
         }
-        return newsRepository;
+        return nearBySearchRepository;
     }
     public NearBySearchRepository(){
         myInterface = RetrofitBuilder.retrofit.create(NearbySearchServices.class);
@@ -50,6 +49,7 @@ public class NearBySearchRepository {
         resultsOut.enqueue(new Callback<NearbySearch>() {
             @Override
             public void onResponse(@NonNull Call<NearbySearch> call, @NonNull Response<NearbySearch> response) {
+                assert response.body() != null;
                 results.setValue(response.body().getResults());
             }
             @Override

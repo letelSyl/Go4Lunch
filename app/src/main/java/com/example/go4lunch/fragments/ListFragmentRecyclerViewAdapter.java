@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.go4lunch.R;
-//import com.example.go4lunch.fragments.dummy.ListFragmentDummyContent.DummyItem;
 import com.example.go4lunch.RestaurantDetailsActivity;
 import com.example.go4lunch.models.nearbySearch.Result;
 

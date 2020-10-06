@@ -20,8 +20,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.go4lunch.databinding.ActivityRestaurantDetailsBinding;
-import com.example.go4lunch.fragments.WorkmateFragmentRecyclerViewAdapter;
-import com.example.go4lunch.fragments.dummy.WorkmateFragmentDummyContent;
 import com.example.go4lunch.httpRequest.DetailsStream;
 import com.example.go4lunch.models.details.Details;
 import com.example.go4lunch.models.details.Result;
@@ -65,7 +63,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
             Context context = mRecyclerView.getContext();
             RecyclerView recyclerView = mRecyclerView;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new WorkmateFragmentRecyclerViewAdapter(WorkmateFragmentDummyContent.ITEMS));
         }
 
         executeHttpRequest();

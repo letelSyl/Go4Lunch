@@ -1,11 +1,13 @@
 package com.example.go4lunch.fragments;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.go4lunch.R;
-import com.example.go4lunch.fragments.dummy.WorkmateFragmentDummyContent.DummyItem;
+import com.example.go4lunch.models.User.User;
 
 import java.util.List;
 
@@ -15,29 +17,45 @@ import androidx.recyclerview.widget.RecyclerView;
 /**
  TODO: Replace the implementation with code for your data type.
  */
-public class WorkmateFragmentRecyclerViewAdapter extends RecyclerView.Adapter<WorkmateViewHolder> {
+public class WorkmateFragmentRecyclerViewAdapter extends RecyclerView.Adapter<WorkmateFragmentViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private final List<User> mValues;
+    private Context context;
 
-    public WorkmateFragmentRecyclerViewAdapter(List<DummyItem> items) {
+    public WorkmateFragmentRecyclerViewAdapter(List<User> items) {
+        super();
         mValues = items;
     }
 
-    @Override
-    public WorkmateViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.workmate_fragment, parent, false);
-        return new WorkmateViewHolder(view);
-    }
+
 
     @Override
-    public void onBindViewHolder(final WorkmateViewHolder holder, int position) {
+    public WorkmateFragmentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.workmate_fragment, parent, false);
+        return new WorkmateFragmentViewHolder(view);
     }
+
+
 
     @Override
     public int getItemCount() {
         return mValues.size();
     }
 
+    @Override
+    public void onBindViewHolder(final WorkmateFragmentViewHolder viewHolder, int position) {
+        final User user = this.mValues.get(position);
 
+        viewHolder.updateWithUser(user);
+
+
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "You've clicked on the workmate !", Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
 }

@@ -47,6 +47,8 @@ public class WorkmateFragment extends Fragment {
     public WorkmateFragment() {
     }
 
+
+
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
     public static WorkmateFragment newInstance(int columnCount) {
@@ -71,6 +73,8 @@ public class WorkmateFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.workmate_fragment_item_list, container, false);
 
+        getActivity().setTitle(getString(R.string.available_workmate));
+
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -86,7 +90,7 @@ public class WorkmateFragment extends Fragment {
 
         usersViewModel = new ViewModelProvider(this).get(UsersViewModel.class);
 
-        usersViewModel.getUserRepository().observe(getViewLifecycleOwner(), users ->{
+        usersViewModel.getListOfUser().observe(getViewLifecycleOwner(), users ->{
 
             if (users != null){
                 updateUIWithUsers(users);

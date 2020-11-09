@@ -49,13 +49,5 @@ public class WorkmateFragmentRecyclerViewAdapter extends RecyclerView.Adapter<Wo
 
         viewHolder.updateWithUser(user);
 
-
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "You've clicked on the workmate !", Toast.LENGTH_LONG).show();
-            }
-        });
-
     }
 }

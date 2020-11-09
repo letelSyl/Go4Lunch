@@ -2,12 +2,6 @@ package com.example.go4lunch.httpRequest;
 
 import com.example.go4lunch.BuildConfig;
 import com.example.go4lunch.models.nearbySearch.NearbySearch;
-import com.example.go4lunch.models.nearbySearch.Result;
-
-import java.util.List;
-
-import androidx.lifecycle.MutableLiveData;
-import io.reactivex.Observable;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;

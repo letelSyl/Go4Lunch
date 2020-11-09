@@ -63,7 +63,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
@@ -84,16 +84,18 @@ dependencies {
 
     //FIREBASE
 
-    implementation 'com.google.firebase:firebase-analytics:17.5.0'
-    implementation 'com.google.firebase:firebase-core:17.5.0'
+    implementation 'com.google.firebase:firebase-analytics:17.6.0'
+    implementation 'com.google.firebase:firebase-core:17.5.1'
     implementation 'com.google.firebase:firebase-auth:19.4.0'
-    implementation 'com.google.firebase:firebase-firestore:21.6.0'
-    implementation 'com.google.firebase:firebase-messaging:20.2.4'
+    implementation 'com.google.firebase:firebase-firestore:21.7.1'
+    implementation 'com.google.firebase:firebase-messaging:20.3.0'
 
 
     // FirebaseUI
     implementation 'com.firebaseui:firebase-ui-auth:6.2.1'
     implementation 'com.firebaseui:firebase-ui-firestore:6.2.1'
+    implementation 'com.firebaseui:firebase-ui-database:0.4.0'
+
     // FirebaseUI Storage
     implementation 'com.firebaseui:firebase-ui-storage:6.2.1'
     // FACEBOOK LOGIN SUPPORT
@@ -102,7 +104,7 @@ dependencies {
     // Adds library used to manipulate the json format more easily
     implementation 'com.google.code.gson:gson:2.8.6'
 
-    implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation 'com.google.android.gms:play-services-location:17.1.0'
 
 
     implementation 'com.squareup.retrofit2:retrofit:2.6.4'
@@ -115,7 +117,7 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxjava:2.2.10'
 
 
-    implementation 'com.google.android.libraries.places:places:2.3.0'
+    implementation 'com.google.android.libraries.places:places:2.4.0'
 
 
     implementation 'androidx.multidex:multidex:2.0.1'

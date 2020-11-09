@@ -1,14 +1,14 @@
 package com.example.go4lunch;
 
-import com.example.go4lunch.models.User.User;
-import com.example.go4lunch.repository.FirestoreRepository;
-import com.google.firebase.firestore.CollectionReference;
+        import com.example.go4lunch.models.User.User;
+        import com.example.go4lunch.repository.FirestoreRepository;
+        import com.google.firebase.firestore.CollectionReference;
 
-import java.util.List;
+        import java.util.List;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
+        import androidx.lifecycle.LiveData;
+        import androidx.lifecycle.MutableLiveData;
+        import androidx.lifecycle.ViewModel;
 
 public class UsersViewModel extends ViewModel {
 
@@ -24,13 +24,23 @@ public class UsersViewModel extends ViewModel {
         repository = new FirestoreRepository();
     }
 
-    public MutableLiveData<List<User>> getUserRepository(){
+    public MutableLiveData<List<User>> getListOfUser(){
         listOfUsers = loadUserData();
         return listOfUsers;
+    }
+
+    public MutableLiveData<List<User>> getFilteredListOfUsers(String restName){
+        return loadFilteredUserData(restName);
     }
 
     private MutableLiveData<List<User>> loadUserData(){
 
         return repository.getUserList();
     }
+
+    private MutableLiveData<List<User>> loadFilteredUserData(String restName){
+
+        return repository.getFilteredUserList(restName);
+    }
+
 }

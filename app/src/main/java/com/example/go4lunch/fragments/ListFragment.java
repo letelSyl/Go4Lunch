@@ -80,6 +80,7 @@ public class ListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getActivity().setTitle(getString(R.string.hungry));
 
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
@@ -93,14 +94,11 @@ public class ListFragment extends Fragment {
         this.listFragmentBinding = ListFragmentBinding.inflate(inflater, container, false);
         View view = inflater.inflate(R.layout.list_fragment_item_list, container, false);
 
-      // position= getArguments().getInt(KEY_POSITION,-1);
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
 
         latitude = MainActivity.getLatitude();
         longitude = MainActivity.getLongitude();
-        // this.executeHttpRequest();
-
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -108,7 +106,7 @@ public class ListFragment extends Fragment {
             RecyclerView recyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
-           } else {
+            } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             this.mAdapter = new ListFragmentRecyclerViewAdapter(this.mResults, this.latitude, this.longitude);

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Go4Lunch</string>
+    <string name="available_workmate">Collaborateurs disponibles</string>
+
+    <string name="error_unknown_error">Une erreur inconnue s\'est produite</string>
+    <string name="main_activity_description">Trouvez un bon restaurant et invitez votre collègue à déjeuner!</string>
+    <string name="sign_in_with_facebook">Connectez-vous avec Facebook</string>
+    <string name="sign_in_with_google">Connectez-vous avec Google</string>
+
+    <!-- FACEBOOK PURPOSE -->
+    <string name="facebook_application_id" translatable="false">2938113756306629</string>
+    <string name="facebook_login_protocol_scheme" translatable="false" tools:ignore="UnusedResources">fb2938113756306629</string>
+
+    <!-- Used in NavigationDrawer -->
+    <string name="navigation_drawer_open">Ouvrir le panneau de navigation</string>
+    <string name="navigation_drawer_close">Fermer le panneau de navigation</string>
+    <string name="info_no_email_found">Aucun e-mail trouvé</string>
+    <string name="info_no_username_found">Aucun nom d\'utilisateur trouvé</string>
+    <string name="user_avatar">Avatar de l\'utilisateur</string>
+    <string name="username">Nom d\'utilisateur</string>
+    <string name="e_mail">e-mail</string>
+    <string name="your_lunch">VOTRE DÉJEUNER</string>
+    <string name="settings">RÉGLAGES</string>
+    <string name="logout">DÉCONECTION</string>
+
+    <!-- Bottom navigation view -->
+    <string name="bottom_navigation_menu_map_view">Carte</string>
+    <string name="bottom_navigation_menu_list_view">Liste</string>
+    <string name="bottom_navigation_menu_workmates">Collaborateurs</string>
+    <string name="title_activity_maps">Carte</string>
+
+    <string name="title_activity_website">WebsiteActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="restaurant_name">Restaurant Name</string>
+    <string name="n_street">N° street</string>
+    <string name="call">CALL</string>
+    <string name="like">LIKE</string>
+    <string name="website">WEBSITE</string>
+
+    <string name="is_joining">is joining!</string>
+    <string name="hungry">J\'ai faim!</string>
+    <string name="alert">Alerte</string>
+    <string name="auth_gps">Pour utiliser cette fonctionnalitée il faut activer le GPS, voulez-vous l\' activer ?</string>
+    <string name="is_eating_at">mange à </string>
+    <string name="hasnt_decided">n\'a pas encore décidé</string>
+    <string name="lunch_pressed">YOUR LUNCH PRESSED !</string>
+    <string name="setting_pressed">\"SETTING PRESSED ! \"</string>
+    <string name="no_phone_number">Aucun numéro de téléphone enregistré !</string>
+    <string name="add_a_like">Vous venez d \'ajouter un Like!</string>
+    <string name="no_website">Le site Web n\'existe pas !</string>
+
+</resources>

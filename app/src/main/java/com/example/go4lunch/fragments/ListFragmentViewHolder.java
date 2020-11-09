@@ -19,6 +19,7 @@ public class ListFragmentViewHolder extends RecyclerView.ViewHolder {
     private String picUrl;
 
 
+
     public ListFragmentViewHolder(View view) {
         super(view);
         mView = view;
@@ -41,7 +42,7 @@ public class ListFragmentViewHolder extends RecyclerView.ViewHolder {
 
         ListFragmentBinding.bind(itemView).fragmentPageItemName.setText(result.getName());
         ListFragmentBinding.bind(itemView).fragmentPageItemAddress.setText(result.getVicinity());
-        if (result.getOpeningHours() == null) {
+        if (result.getOpeningHours() == null || result.getOpeningHours() != null) {
             ListFragmentBinding.bind(itemView).fragmentPageItemClosureHour.setText("N/A");
         }else{
             if (result.getOpeningHours().getOpenNow()) {
@@ -53,6 +54,7 @@ public class ListFragmentViewHolder extends RecyclerView.ViewHolder {
 
 
         }
+
         ListFragmentBinding.bind(itemView).ratingBar.setRating(result.getRating().byteValue()*3/5);
 
         if (result.getPhotos() != null && result.getPhotos().size() != 0){

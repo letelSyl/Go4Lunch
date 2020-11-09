@@ -3,6 +3,7 @@ package com.example.go4lunch.fragments;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
+import com.example.go4lunch.R;
 import com.example.go4lunch.databinding.WorkmateFragmentBinding;
 import com.example.go4lunch.models.User.User;
 
@@ -22,13 +23,20 @@ public class WorkmateFragmentViewHolder extends RecyclerView.ViewHolder {
 
         String uid = user.getUid();
         String name = user.getUsername();
+        String restName = user.getRestName();
 
         if(name != null){
-            WorkmateFragmentBinding.bind(itemView).info.setText(name);
+            if (restName != null && !restName.equals(""))
+                WorkmateFragmentBinding.bind(itemView).info.setText(name + " " + itemView.getContext().getResources().getString(R.string.is_eating_at) + " " + restName);
+            else {
+                WorkmateFragmentBinding.bind(itemView).info.setText(name + " " + itemView.getContext().getResources().getString(R.string.hasnt_decided));
+                WorkmateFragmentBinding.bind(itemView).info.setTextColor(itemView.getContext().getResources().getColor(R.color.personal_grey));
+
+            }
         }
         if (user.getUrlPicture() != null){
             this.picUrl = user.getUrlPicture();
-            Glide.with(itemView.getContext()).load(this.picUrl).centerCrop().override(250, 250).into(WorkmateFragmentBinding.bind(itemView).fragmentPageItemPicture);
+            Glide.with(itemView.getContext()).load(this.picUrl). circleCrop().override(250, 250).into(WorkmateFragmentBinding.bind(itemView).fragmentPageItemPicture);
         }
 
     }

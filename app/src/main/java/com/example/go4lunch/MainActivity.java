@@ -1,16 +1,14 @@
 package com.example.go4lunch;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
-import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,13 +16,10 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.go4lunch.databinding.ActivityMainBinding;
-import com.example.go4lunch.databinding.ListFragmentBinding;
 import com.example.go4lunch.firestore.UserHelper;
 import com.example.go4lunch.fragments.ListFragment;
 import com.example.go4lunch.fragments.MapFragment;
 import com.example.go4lunch.fragments.WorkmateFragment;
-import com.example.go4lunch.httpRequest.NearbySearchStream;
-import com.example.go4lunch.models.nearbySearch.NearbySearch;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,6 +31,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -47,15 +43,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import io.reactivex.observers.DisposableObserver;
-import okhttp3.logging.HttpLoggingInterceptor;
-
-import static com.example.go4lunch.httpRequest.RetrofitBuilder.logging;
-import static java.security.AccessController.getContext;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private ActivityMainBinding binding;
+
+    SharedPreferences prefs;
+
 
 
     private MaterialToolbar toolbar;
@@ -90,6 +84,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             View view = binding.getRoot();
 
             setContentView(view);
+
+            prefs = getApplicationContext().getSharedPreferences("PREFS",MODE_PRIVATE );
 
             this.configureToolbar();
 
@@ -202,11 +198,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch (itemId) {
             case R.id.your_lunch:
-                Toast.makeText(getApplicationContext(), "YOUR LUNCH PRESSED !",  Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), R.string.lunch_pressed,  Toast.LENGTH_LONG).show();
                 return true;
 
             case R.id.settings:
-                Toast.makeText(getApplicationContext(), "SETTING PRESSED ! ",  Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), R.string.setting_pressed,  Toast.LENGTH_LONG).show();
                 return true;
 
             case R.id.logout:
@@ -271,7 +267,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             //Update views with data
             userName.setText(username);
             userEmail.setText(email);
+
+           createUserInFirestore();
         }
+
+
     }
 
     //-----------------
@@ -326,10 +326,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (this.getCurrentUser() != null){
 
             String urlPicture = (this.getCurrentUser().getPhotoUrl() != null) ? this.getCurrentUser().getPhotoUrl().toString() : null;
-            String username = this.getCurrentUser().getDisplayName();
+            String name = this.getCurrentUser().getDisplayName();
             String uid = this.getCurrentUser().getUid();
+            String restName;
+            String restId;
+            ArrayList<String> likedRestaurant = new ArrayList<>();
+            if(prefs.contains("RESTAURANT_NAME")) {
+                restName = prefs.getString("RESTAURANT_NAME", "");
+                restId = prefs.getString("RESTAURANT_ID","");
+            }else {
+                restName = "";
+                restId = "";
+            }
 
-            UserHelper.createUser(uid, username, urlPicture).addOnFailureListener(this.onFailureListener());
+            UserHelper.createUser(uid, name,  urlPicture, restName,restId, likedRestaurant).addOnFailureListener(this.onFailureListener());
         }
     }
 

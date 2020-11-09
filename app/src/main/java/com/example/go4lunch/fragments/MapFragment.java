@@ -75,7 +75,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //  mViewModel = new ViewModelProvider(this).get(MapViewModel.class);
         providerClient = LocationServices.getFusedLocationProviderClient(getContext());
 
 
@@ -84,6 +83,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
+        getActivity().setTitle(getString(R.string.hungry));
+
 
         mView = inflater.inflate(R.layout.map_fragment, container, false);
 
@@ -134,8 +136,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     public void alert() {
         AlertDialog.Builder builder;
         builder = new AlertDialog.Builder(getContext(), android.R.style.Theme_DeviceDefault_Light_Dialog_Alert);
-        builder.setTitle("Alerte")
-                .setMessage("Pour utiliser cette fonctionnalitée il faut activer le GPS, voulez-vous l' activer ?")
+        builder.setTitle(R.string.alert)
+                .setMessage(R.string.auth_gps)
                 .setPositiveButton(android.R.string.yes, (dialog, which) -> startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)))
                 .setNegativeButton(android.R.string.no, (dialog, which) -> {
 // do nothing
@@ -207,12 +209,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                     .position(new LatLng(result.getGeometry().getLocation().getLat(),result.getGeometry().getLocation().getLng()))
                     .title(result.getName()));
                     allMarkersMap.put(marker,result);
-
-
-
                 }
-
-
             }
         });
 

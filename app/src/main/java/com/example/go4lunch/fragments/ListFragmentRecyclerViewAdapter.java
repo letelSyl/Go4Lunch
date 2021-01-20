@@ -39,13 +39,13 @@ public class ListFragmentRecyclerViewAdapter extends RecyclerView.Adapter<ListFr
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.list_fragment, parent, false);
 
-        return new ListFragmentViewHolder(view);
+        return new ListFragmentViewHolder(view, context);
     }
 
     @Override
-    public void onBindViewHolder(final ListFragmentViewHolder viewHolder, int position) {
-        final Result result = this.results.get(position);
+    public void onBindViewHolder(ListFragmentViewHolder viewHolder, int position) {
 
+        Result result = this.results.get(position);
         viewHolder.updateWithNearbySearch(result, curLat, curLng);
 
        String placeId = result.getPlaceId();
@@ -66,6 +66,8 @@ public class ListFragmentRecyclerViewAdapter extends RecyclerView.Adapter<ListFr
     public int getItemCount() {
         return this.results.size();
     }
+
+
 
 
 }

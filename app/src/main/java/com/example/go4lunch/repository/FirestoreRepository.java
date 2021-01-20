@@ -52,14 +52,11 @@ public class FirestoreRepository {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 List<User> list = new ArrayList<>();
-                if (value.getDocuments() != null) {
-                    for (DocumentSnapshot documentSnapshot : Objects.requireNonNull(value.getDocuments())) {
-                        list.add(documentSnapshot.toObject(User.class));
-                    }
-                    filteredUsers.setValue(list);
+                for (DocumentSnapshot documentSnapshot : Objects.requireNonNull(value.getDocuments())) {
+                    list.add(documentSnapshot.toObject(User.class));
                 }
 
-
+                filteredUsers.setValue(list);
             }
         });
 

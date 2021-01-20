@@ -7,17 +7,20 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.go4lunch.MainActivity;
-import com.example.go4lunch.RestaurantsViewModel;
 import com.example.go4lunch.R;
+import com.example.go4lunch.RestaurantsViewModel;
 import com.example.go4lunch.databinding.ListFragmentBinding;
 import com.example.go4lunch.databinding.ListFragmentItemListBinding;
+import com.example.go4lunch.models.User.User;
 import com.example.go4lunch.models.nearbySearch.Result;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.Observer;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -34,27 +37,23 @@ public class ListFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
-
-    private ListFragmentBinding listFragmentBinding;
-    private ListFragmentItemListBinding itemListBinding;
-
     // Create keys for our Bundle
     private static final String KEY_POSITION = "position";
+    private static double latitude;
+    private static double longitude;
+    // TODO: Customize parameters
+    private int mColumnCount = 1;
+    private ListFragmentBinding listFragmentBinding;
+    private ListFragmentItemListBinding itemListBinding;
     private int position;
-
     private Disposable disposable;
-
     private List<Result> mResults = new ArrayList<>();
     private ListFragmentRecyclerViewAdapter mAdapter;
 
+    private List<User> users = new ArrayList<>();
     private RestaurantsViewModel restaurantsViewModel;
 
-    private MutableLiveData<List<Result>> mutableLiveData;
-
-    private static double latitude;
-    private static double longitude;
+    private int numUsers;
 
 
     /**
@@ -70,8 +69,7 @@ public class ListFragment extends Fragment {
 
         ListFragment fragment = new ListFragment();
 
-
-       Bundle args = new Bundle();
+        Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
         return fragment;
@@ -85,10 +83,15 @@ public class ListFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+        restaurantsViewModel = new ViewModelProvider(requireActivity()).get(RestaurantsViewModel.class);
+      /*  if(restaurantsViewModel.getListOfRestaurants() == null) {
+            getLifecycle().addObserver(restaurantsViewModel);*/
+        restaurantsViewModel.getListOfRestaurants().observe(this, this::updateUI);
+        //}
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 
         this.listFragmentBinding = ListFragmentBinding.inflate(inflater, container, false);
@@ -101,7 +104,9 @@ public class ListFragment extends Fragment {
         longitude = MainActivity.getLongitude();
 
         // Set the adapter
+
         if (view instanceof RecyclerView) {
+
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
@@ -109,23 +114,16 @@ public class ListFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            this.mAdapter = new ListFragmentRecyclerViewAdapter(this.mResults, this.latitude, this.longitude);
+            this.mAdapter = new ListFragmentRecyclerViewAdapter(this.mResults, latitude, longitude);
+
             recyclerView.setAdapter(this.mAdapter);
         }
 
 
-        restaurantsViewModel = new ViewModelProvider(this).get(RestaurantsViewModel.class);
-
-        restaurantsViewModel.getNearBySearchRepository(latitude, longitude).observe(getViewLifecycleOwner(), results ->{
-
-           if (results != null){
-               updateUIWithNearbySearch(results);
-           }
-        });
-
 
         return view;
     }
+
 
     @Override
     public void onDestroy() {
@@ -138,11 +136,11 @@ public class ListFragment extends Fragment {
     }
 
 
-    private void updateUIWithNearbySearch(List<Result> results){
+    private void updateUI(List<Result> results) {
         this.mResults.clear();
         this.mResults.addAll(results);
         this.mAdapter.notifyDataSetChanged();
     }
-
-
 }
+
+

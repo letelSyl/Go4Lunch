@@ -41,9 +41,11 @@ public class DetailsRepository{
         resultsOut.enqueue(new Callback<Details>() {
             @Override
             public void onResponse(@NonNull Call<Details> call, @NonNull Response<Details> response) {
-                assert response.body() != null;
-                results.setValue(response.body().getResult());
+                if (response.body() != null) {
+                    results.setValue(response.body().getResult());
+                }
             }
+
             @Override
             public void onFailure(Call<Details> call, Throwable t) {
                 results.postValue(null);

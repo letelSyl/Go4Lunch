@@ -2,10 +2,6 @@ package com.example.go4lunch.models.nearbySearch;
 
 import java.util.List;
 
-import com.example.go4lunch.models.nearbySearch.Geometry;
-import com.example.go4lunch.models.nearbySearch.OpeningHours;
-import com.example.go4lunch.models.nearbySearch.Photo;
-import com.example.go4lunch.models.nearbySearch.PlusCode;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -62,6 +58,8 @@ public class Result {
     @SerializedName("permanently_closed")
     @Expose
     private Boolean permanentlyClosed;
+
+    private int numUsers;
 
     public String getBusinessStatus() {
         return businessStatus;
@@ -122,6 +120,7 @@ public class Result {
     public String getPlaceId() {
         return placeId;
     }
+
 
     public void setPlaceId(String placeId) {
         this.placeId = placeId;
@@ -199,5 +198,8 @@ public class Result {
         this.permanentlyClosed = permanentlyClosed;
     }
 
+    public int getNumUsers(){ return numUsers; }
+
+    public void setNumUsers(int numUsers){ this.numUsers = numUsers; }
 }
 

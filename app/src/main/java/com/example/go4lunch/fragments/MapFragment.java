@@ -14,9 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.go4lunch.MainActivity;
-import com.example.go4lunch.RestaurantsViewModel;
 import com.example.go4lunch.R;
 import com.example.go4lunch.RestaurantDetailsActivity;
+import com.example.go4lunch.RestaurantsViewModel;
 import com.example.go4lunch.models.nearbySearch.Result;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -25,6 +25,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -47,7 +48,6 @@ import androidx.lifecycle.ViewModelProvider;
 public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
 
-
     private GoogleMap mGoogleMap;
     private MapView mMapView;
     private View mView;
@@ -65,12 +65,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     private Map<Marker, Result> allMarkersMap = new HashMap<Marker, Result>();
 
 
-
-    public static MapFragment newInstance() {
-
-        return new MapFragment();
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +79,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                              @Nullable Bundle savedInstanceState) {
 
         getActivity().setTitle(getString(R.string.hungry));
+
+        restaurantsViewModel = new ViewModelProvider(requireActivity()).get(RestaurantsViewModel.class);
 
 
         mView = inflater.inflate(R.layout.map_fragment, container, false);
@@ -110,12 +106,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                 alert();
             }
         }
-        restaurantsViewModel = new ViewModelProvider(this).get(RestaurantsViewModel.class);
-
 
         return mView;
     }
-
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -149,7 +142,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     public void onMapReady(GoogleMap googleMap) {
 
         mGoogleMap = googleMap;
-
 
 
         latitude = MainActivity.getLatitude();
@@ -189,7 +181,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-           return;
+            return;
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 5, locationListener);
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -201,14 +193,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         mGoogleMap.setMyLocationEnabled(true);
         mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
 
-        restaurantsViewModel.getNearBySearchRepository(latitude, longitude).observe(getViewLifecycleOwner(), results ->{
+       restaurantsViewModel.getListOfRestaurants().observe(this, results -> {
 
-            if (results != null){
-                for (Result result:results) {
+            if (results != null) {
+                for (Result result : results) {
                     Marker marker = mGoogleMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(result.getGeometry().getLocation().getLat(),result.getGeometry().getLocation().getLng()))
-                    .title(result.getName()));
-                    allMarkersMap.put(marker,result);
+                            .position(new LatLng(result.getGeometry().getLocation().getLat(), result.getGeometry().getLocation().getLng()))
+                            .title(result.getName()));
+                            marker.setIcon(BitmapDescriptorFactory.fromResource(result.getNumUsers() > 0 ? R.drawable.green_dot : R.drawable.red_dot));
+                    allMarkersMap.put(marker, result);
                 }
             }
         });
@@ -222,7 +215,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     public boolean onMarkerClick(Marker marker) {
         Result result = allMarkersMap.get(marker);
         String markerId = result.getPlaceId();
-        Intent details = new Intent (getContext(), RestaurantDetailsActivity.class);
+        Intent details = new Intent(getContext(), RestaurantDetailsActivity.class);
         details.putExtra("placeId", markerId);
         getContext().startActivity(details);
 

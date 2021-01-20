@@ -1,12 +1,15 @@
 package com.example.go4lunch;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.renderscript.Sampler;
 import android.text.TextUtils;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,23 +19,36 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.go4lunch.databinding.ActivityMainBinding;
+import com.example.go4lunch.firestore.CurrentUser;
 import com.example.go4lunch.firestore.UserHelper;
 import com.example.go4lunch.fragments.ListFragment;
 import com.example.go4lunch.fragments.MapFragment;
 import com.example.go4lunch.fragments.WorkmateFragment;
+import com.example.go4lunch.httpRequest.NearbySearchServices;
+import com.example.go4lunch.models.User.User;
+import com.example.go4lunch.models.nearbySearch.NearbySearch;
+import com.example.go4lunch.models.nearbySearch.Result;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -43,6 +59,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModelProvider;
+import retrofit2.Call;
+import retrofit2.http.QueryMap;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -51,10 +71,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     SharedPreferences prefs;
 
 
+    private static int AUTOCOMPLETE_REQUEST_CODE = 1;
 
     private MaterialToolbar toolbar;
 
     private BottomNavigationView bottomNavigationView;
+
+    private  RestaurantsViewModel restaurantsViewModel;
 
 
 //  private ActionBar ab;
@@ -74,12 +97,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                      // à metre dans le view model*/
     private static double longitude;//
 
+    private static double latLng;
+    private MutableLiveData<List<Result>> listOfRestaurants;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        //TODO : look for singleton
+
         super.onCreate(savedInstanceState);
         if(isCurrentUserLogged()){
 
+            UserHelper.getUser(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                  //TODO : recup doc dans firebase et send to singleton
+                    User currentUser = documentSnapshot.toObject(User.class);
+                    CurrentUser.set_instance(currentUser);
+                }
+            });
             binding = ActivityMainBinding.inflate(getLayoutInflater());
             View view = binding.getRoot();
 
@@ -89,7 +125,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             this.configureToolbar();
 
-            this.configureFragment();
+            restaurantsViewModel = new ViewModelProvider(this).get(RestaurantsViewModel.class);
+
 
             this.configureDrawerLayout();
 
@@ -98,15 +135,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             this.updateUIWhenStarting();
 
             this.configureBottomView();
+
+            getCurrentLocation();
+
+            setupRestaurantList(latitude, longitude);
+
+            this.configureFragment();
         } else{
             this.startSignInActivity();
 
         }
-
-        getCurrentLocation();
-
-
     }
+
+    public void setupRestaurantList(double latitude, double longitude){
+       restaurantsViewModel.getNearBySearchRepository(latitude, longitude);
+    }
+
     @Override
     protected void onStart() {
 
@@ -126,13 +170,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //1 - inflate the menu and add it to the toolbar
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        //2 - Handle actions on menu items
+        if (itemSwitch(item.getItemId())) {
+
+            return true;
+
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
     protected void configureFragment(){
 
         // Initialize the SDK
         Places.initialize(getApplicationContext(),BuildConfig.API_KEY);
 
         // Create a new PlacesClient instance
-        PlacesClient placesClient = Places.createClient(this);
+      //  PlacesClient placesClient = Places.createClient(this);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment, mMapFragment).commit();
     }
@@ -197,6 +260,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private boolean itemSwitch(int itemId) {
 
         switch (itemId) {
+            case R.id.search:
+
+                // Set the fields to specify which types of place data to
+                // return after the user has made a selection.
+                List<Place.Field> fields = Arrays.asList(Place.Field.NAME, Place.Field.ID);
+
+                // Start the autocomplete intent.
+                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
+                        .setTypeFilter(TypeFilter.ESTABLISHMENT)
+                        .build(this);
+                startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
+
+
+                return true;
             case R.id.your_lunch:
                 Toast.makeText(getApplicationContext(), R.string.lunch_pressed,  Toast.LENGTH_LONG).show();
                 return true;
@@ -216,6 +293,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Place place = Autocomplete.getPlaceFromIntent(data);
+                Intent details = new Intent (this, RestaurantDetailsActivity.class);
+                details.putExtra("placeId", place.getId());
+                this.startActivity(details);
+            }
+            return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
 
     private boolean updateMainFragment(Integer integer){
@@ -282,6 +372,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void startSignInActivity() {
 
         List<AuthUI.IdpConfig> providers =Arrays.asList(
+                new AuthUI.IdpConfig.EmailBuilder().build(),
                 new AuthUI.IdpConfig.FacebookBuilder().build(),
                 new AuthUI.IdpConfig.GoogleBuilder().build());
 
@@ -304,9 +395,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // --------------------
 
     @Nullable
-    protected FirebaseUser getCurrentUser(){
+    protected static FirebaseUser getCurrentUser(){
         return FirebaseAuth.getInstance().getCurrentUser();
     }
+
+
 
     protected Boolean isCurrentUserLogged(){
         return (this.getCurrentUser() != null);
@@ -400,6 +493,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
+
+//-----------------TODO:Passer par le view model----------
+
     public static double getLatitude(){
         return latitude;
     }
@@ -408,5 +504,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         return longitude;
     }
+/*
+    public static MutableLiveData<List<Result>> getRestaurantsList(){
+        return restaurantsViewModel.getListOfRestaurants();
+    }
+    public static RestaurantsViewModel getRestaurantsViewModel(){ return restaurantsViewModel; }
 
+ */
 }

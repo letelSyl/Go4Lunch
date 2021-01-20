@@ -1,5 +1,6 @@
 package com.example.go4lunch.fragments;
 
+import android.content.Context;
 import android.location.Location;
 import android.view.View;
 
@@ -14,24 +15,30 @@ import java.text.DecimalFormat;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ListFragmentViewHolder extends RecyclerView.ViewHolder {
+
     public final View mView;
+
+    private Context context;
 
     private String picUrl;
 
+    //private RestaurantsViewModel restaurantsViewModel;
 
-
-    public ListFragmentViewHolder(View view) {
+    public ListFragmentViewHolder(View view, Context context) {
         super(view);
         mView = view;
+        this.context = context;
     }
 
 
-
-
-    public void updateWithNearbySearch(Result result, double curLat, double curLng){
+    public void updateWithNearbySearch(Result result, double curLat, double curLng) {
 
         float[] results = new float[1];
-        Location.distanceBetween(curLat, curLng, result.getGeometry().getLocation().getLat(), result.getGeometry().getLocation().getLng(), results);
+        Location.distanceBetween(curLat,
+                curLng,
+                result.getGeometry().getLocation().getLat(),
+                result.getGeometry().getLocation().getLng(),
+                results);
         float distance = results[0];
 
         DecimalFormat df = new DecimalFormat("#");
@@ -40,11 +47,13 @@ public class ListFragmentViewHolder extends RecyclerView.ViewHolder {
 
         ListFragmentBinding.bind(itemView).fragmentPageItemDistance.setText(roundedDistance + "m");
 
+        ListFragmentBinding.bind(itemView).numUsers.setText("(" + result.getNumUsers() + ")");
+
         ListFragmentBinding.bind(itemView).fragmentPageItemName.setText(result.getName());
         ListFragmentBinding.bind(itemView).fragmentPageItemAddress.setText(result.getVicinity());
         if (result.getOpeningHours() == null || result.getOpeningHours() != null) {
             ListFragmentBinding.bind(itemView).fragmentPageItemClosureHour.setText("N/A");
-        }else{
+        } else {
             if (result.getOpeningHours().getOpenNow()) {
                 ListFragmentBinding.bind(itemView).fragmentPageItemClosureHour.setText("Open");
             } else {
@@ -55,12 +64,19 @@ public class ListFragmentViewHolder extends RecyclerView.ViewHolder {
 
         }
 
-        ListFragmentBinding.bind(itemView).ratingBar.setRating(result.getRating().byteValue()*3/5);
+        ListFragmentBinding.bind(itemView).ratingBar.setRating(result.getRating() != null ? result.getRating().byteValue() * 3 / 5f : 0);
 
-        if (result.getPhotos() != null && result.getPhotos().size() != 0){
-            this.picUrl = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="+result.getPhotos().get(0).getPhotoReference()+"&key=" + BuildConfig.API_KEY;
 
-            Glide.with(itemView.getContext()).load(picUrl).centerCrop().override(250, 250).into(ListFragmentBinding.bind(itemView).fragmentPageItemPicture);
+        if (result.getPhotos() != null && result.getPhotos().size() != 0) {
+            this.picUrl = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=" +
+                    result.getPhotos().get(0).getPhotoReference() + "&key=" +
+                    BuildConfig.API_KEY;
+
+            Glide.with(itemView.getContext())
+                    .load(picUrl).centerCrop()
+                    .override(250, 250)
+                    .into(ListFragmentBinding.bind(itemView)
+                            .fragmentPageItemPicture);
         }
 
     }

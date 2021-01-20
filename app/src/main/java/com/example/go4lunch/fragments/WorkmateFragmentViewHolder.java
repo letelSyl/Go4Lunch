@@ -7,6 +7,8 @@ import com.example.go4lunch.R;
 import com.example.go4lunch.databinding.WorkmateFragmentBinding;
 import com.example.go4lunch.models.User.User;
 
+import org.jetbrains.annotations.NotNull;
+
 import androidx.recyclerview.widget.RecyclerView;
 
 public class WorkmateFragmentViewHolder extends RecyclerView.ViewHolder {
@@ -41,6 +43,7 @@ public class WorkmateFragmentViewHolder extends RecyclerView.ViewHolder {
 
     }
 
+    @NotNull
     @Override
     public String toString() {
         return super.toString();

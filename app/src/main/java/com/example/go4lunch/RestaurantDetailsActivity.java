@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.go4lunch.databinding.ActivityRestaurantDetailsBinding;
+import com.example.go4lunch.firestore.CurrentUser;
 import com.example.go4lunch.firestore.UserHelper;
 import com.example.go4lunch.fragments.WorkmateFragmentRecyclerViewAdapter;
 import com.example.go4lunch.models.User.User;
@@ -32,6 +33,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class RestaurantDetailsActivity extends AppCompatActivity {
 
@@ -181,17 +183,12 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
             }
         });
     }
-
+//TODO : refactor using MVVM patern
     private void initFloatingActionButton(Result result){
         FloatingActionButton floatingActionButton = binding.floatingActionButton;
-        boolean isClicked;
-        if (prefs.contains(IS_CLICKED))
-        {
-            isClicked = prefs.getBoolean("IS_CLICKED", false);
-        }else {
-            isClicked = false;
-        }
-        if (isClicked && prefs.getString(RESTAURANT_NAME, "").equals(result.getName()))
+
+        User currentUser = CurrentUser.getInstance();
+        if (result.getPlaceId().equals(currentUser.getRestId()))
         {
             floatingActionButton.setImageResource(R.drawable.ic_offline_pin_green_24dp);
         }else{
@@ -205,22 +202,19 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (!isClicked) {
+                if (!result.getPlaceId().equals(currentUser.getRestId()))
+                 {
+
                     floatingActionButton.setImageResource(R.drawable.ic_offline_pin_green_24dp);
-                    UserHelper.updateRestName(result.getName(), FirebaseAuth.getInstance().getCurrentUser().getUid());
-                    UserHelper.updateRestId(result.getPlaceId(), FirebaseAuth.getInstance().getCurrentUser().getUid());
-                    prefs.edit().putBoolean("IS_CLICKED", true).apply();
-                    prefs.edit().putString("RESTAURANT_NAME", result.getName()).apply();
-                    prefs.edit().putString("RESTAURANT_ID", result.getPlaceId()).apply();
+
+                    detailsViewModel.updateCurrentUser(result.getName(), result.getPlaceId(),FirebaseAuth.getInstance().getCurrentUser().getUid());
 
 
                 }else {
                     floatingActionButton.setImageResource(R.drawable.ic_add_circle_outline_black_24dp);
-                    UserHelper.updateRestName("", FirebaseAuth.getInstance().getCurrentUser().getUid());
-                    UserHelper.updateRestId("", FirebaseAuth.getInstance().getCurrentUser().getUid());
-                    prefs.edit().putBoolean("IS_CLICKED", false).apply();
-                    prefs.edit().putString("RESTAURANT_NAME", "").apply();
-                    prefs.edit().putString("RESTAURANT_ID", "").apply();
+
+
+                    detailsViewModel.updateCurrentUser("", "", FirebaseAuth.getInstance().getCurrentUser().getUid());
 
                 }
             }});
@@ -231,8 +225,8 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
 
         restName = result.getName();
 
-        ActivityRestaurantDetailsBinding.bind(mView).name.setText(result.getName());
-        ActivityRestaurantDetailsBinding.bind(mView).ratingBar2.setRating(result.getRating().byteValue() * 3 / 5);
+        ActivityRestaurantDetailsBinding.bind(mView).name.setText(restName);
+        ActivityRestaurantDetailsBinding.bind(mView).ratingBar2.setRating(result.getRating() != null ? result.getRating().byteValue() * 3 / 5f : 0);
         ActivityRestaurantDetailsBinding.bind(mView).address.setText(result.getFormattedAddress());
         if (result.getPhotos() != null && result.getPhotos().size() != 0) {
             this.picUrl = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=" + result.getPhotos().get(0).getPhotoReference() + "&key=" + BuildConfig.API_KEY;

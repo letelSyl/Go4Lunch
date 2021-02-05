@@ -23,12 +23,16 @@ import static com.example.go4lunch.httpRequest.RetrofitBuilder.logging;
 
 public class NearBySearchRepository {
 
+//TODO : modify locally list results to direct reading in views
 
     private MutableLiveData<List<Result>> results = new MutableLiveData<>();
     private static NearBySearchRepository nearBySearchRepository;
     private static FirestoreRepository firestoreRepository;
 
     private static NearbySearchServices myInterface;
+
+
+    private List<Result> resultsList = new ArrayList<>();
 
     public static NearBySearchRepository getInstance() {
         if (nearBySearchRepository == null) {
@@ -41,6 +45,25 @@ public class NearBySearchRepository {
         myInterface = RetrofitBuilder.retrofit.create(NearbySearchServices.class);
     }
 
+    public void increaseResultsNumUsers(String currentRestId){
+        for (Result result : resultsList){
+            if (result.getPlaceId().equals(currentRestId)){
+                result.setNumUsers(result.getNumUsers() + 1);
+            }
+        }
+        results.setValue(resultsList);
+    }
+
+    public void decreaseResultsNumUsers(String currentRestId){
+
+        for (Result result : resultsList){
+            if (result.getPlaceId().equals(currentRestId)){
+                result.setNumUsers(result.getNumUsers() - 1);
+            }
+        }
+        results.setValue(resultsList);
+
+    }
 
     public MutableLiveData<List<Result>> getRestaurantsList(double latitude, double longitude) {
 
@@ -54,9 +77,9 @@ public class NearBySearchRepository {
             @Override
             public void onResponse(@NonNull Call<NearbySearch> call, @NonNull Response<NearbySearch> response) {
                 //------TODO:list users  ici------
+            //    List<User> userList = new ArrayList<>();
 
                 if (response.body() != null) {
-                    List<Result> resultsList = new ArrayList<>();
                     for (Result result : response.body().getResults()) {
                         Task<QuerySnapshot> querySnapshotTask = UserHelper.getUsersWithRestname(result.getName()).get();
                         querySnapshotTask.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private ActivityMainBinding binding;
 
-    SharedPreferences prefs;
+
 
 
     private static int AUTOCOMPLETE_REQUEST_CODE = 1;
@@ -80,9 +80,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private  RestaurantsViewModel restaurantsViewModel;
 
 
-//  private ActionBar ab;
+
     private DrawerLayout drawerLayout;
-//    private NavigationView navigationView;
+
 
     // 1 - Identifier for Sign-in Activity
     private static final int RC_SIGN_IN = 123;
@@ -121,8 +121,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             setContentView(view);
 
-            prefs = getApplicationContext().getSharedPreferences("PREFS",MODE_PRIVATE );
-
             this.configureToolbar();
 
             restaurantsViewModel = new ViewModelProvider(this).get(RestaurantsViewModel.class);
@@ -148,7 +146,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void setupRestaurantList(double latitude, double longitude){
-       restaurantsViewModel.getNearBySearchRepository(latitude, longitude);
+       restaurantsViewModel.
+               getNearBySearchRepository(latitude, longitude);
     }
 
     @Override
@@ -416,21 +415,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void createUserInFirestore(){
 
-        if (this.getCurrentUser() != null){
-
-            String urlPicture = (this.getCurrentUser().getPhotoUrl() != null) ? this.getCurrentUser().getPhotoUrl().toString() : null;
-            String name = this.getCurrentUser().getDisplayName();
-            String uid = this.getCurrentUser().getUid();
-            String restName;
-            String restId;
+      //  if (getCurrentUser() != null){
+        if (UserHelper.getUser(getCurrentUser().getUid()) == null){
+            String urlPicture = (getCurrentUser().getPhotoUrl() != null) ? this.getCurrentUser().getPhotoUrl().toString() : null;
+            String name = getCurrentUser().getDisplayName();
+            String uid = getCurrentUser().getUid();
+            String restName="";
+            String restId="";
             ArrayList<String> likedRestaurant = new ArrayList<>();
-            if(prefs.contains("RESTAURANT_NAME")) {
-                restName = prefs.getString("RESTAURANT_NAME", "");
-                restId = prefs.getString("RESTAURANT_ID","");
-            }else {
-                restName = "";
-                restId = "";
-            }
 
             UserHelper.createUser(uid, name,  urlPicture, restName,restId, likedRestaurant).addOnFailureListener(this.onFailureListener());
         }

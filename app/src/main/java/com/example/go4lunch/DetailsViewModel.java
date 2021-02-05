@@ -5,11 +5,10 @@ import com.example.go4lunch.models.User.User;
 import com.example.go4lunch.models.details.Result;
 import com.example.go4lunch.repository.DetailsRepository;
 import com.example.go4lunch.repository.FirestoreRepository;
-import com.google.firebase.auth.FirebaseAuth;
+import com.example.go4lunch.repository.NearBySearchRepository;
 
 import java.util.List;
 
-import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -19,6 +18,7 @@ public class DetailsViewModel extends ViewModel {
 
     private final DetailsRepository detailsRepository;
     private final FirestoreRepository usersRepo;
+    private final NearBySearchRepository nearBySearchRepository;
 
     private MutableLiveData<Result> details = new MutableLiveData<>();
     private MutableLiveData<List<User>> usersList = new MutableLiveData<>();
@@ -28,6 +28,7 @@ public class DetailsViewModel extends ViewModel {
 
     public DetailsViewModel() {
         super();
+        nearBySearchRepository = NearBySearchRepository.getInstance();
         detailsRepository = new DetailsRepository();
         usersRepo = new FirestoreRepository();
     }
@@ -55,8 +56,15 @@ public class DetailsViewModel extends ViewModel {
 
     }
 
+    public void increaseResultsNumUsers(String currentRestId) {
+        nearBySearchRepository.increaseResultsNumUsers(currentRestId);
+    }
 
-    private MutableLiveData<List<User>> loadUsers(String restName){
+    public void decreaseResultsNumUsers(String currentRestId) {
+        nearBySearchRepository.decreaseResultsNumUsers(currentRestId);
+    }
+
+        private MutableLiveData<List<User>> loadUsers(String restName){
         return usersRepo.getFilteredUserList(restName);
     }
 

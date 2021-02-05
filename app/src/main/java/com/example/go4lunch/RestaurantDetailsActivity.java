@@ -1,7 +1,6 @@
 package com.example.go4lunch;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
@@ -14,7 +13,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -33,7 +31,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class RestaurantDetailsActivity extends AppCompatActivity {
 
@@ -198,7 +195,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
 
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.M)
+         //   @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
 
@@ -207,7 +204,12 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
 
                     floatingActionButton.setImageResource(R.drawable.ic_offline_pin_green_24dp);
 
-                    detailsViewModel.updateCurrentUser(result.getName(), result.getPlaceId(),FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    detailsViewModel.updateCurrentUser(result.getName(),
+                                                        result.getPlaceId(),
+                                                        FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    detailsViewModel.increaseResultsNumUsers(result.getPlaceId());
+
+
 
 
                 }else {
@@ -215,6 +217,8 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
 
 
                     detailsViewModel.updateCurrentUser("", "", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    detailsViewModel.decreaseResultsNumUsers(result.getPlaceId());
+
 
                 }
             }});

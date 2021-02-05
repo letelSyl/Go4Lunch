@@ -10,6 +10,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class UserHelper {
 
@@ -31,6 +32,8 @@ public class UserHelper {
         User userToCreate = new User(uid, name,  urlPicture, restName, restId, likedRestaurants);
         return UserHelper.getUsersCollection().document(uid).set(userToCreate);
     }
+
+
 
     // --- GET ---
 

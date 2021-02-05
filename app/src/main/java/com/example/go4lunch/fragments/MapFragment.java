@@ -118,6 +118,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
     }
 
+
     public void initMap() {
         if (mMapView != null) {
             mMapView.onCreate(null);
@@ -196,6 +197,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
        restaurantsViewModel.getListOfRestaurants().observe(this, results -> {
 
             if (results != null) {
+                mGoogleMap.clear();
                 for (Result result : results) {
                     Marker marker = mGoogleMap.addMarker(new MarkerOptions()
                             .position(new LatLng(result.getGeometry().getLocation().getLat(), result.getGeometry().getLocation().getLng()))

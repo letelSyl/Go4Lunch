@@ -24,7 +24,7 @@ public class RestaurantsViewModel extends ViewModel implements LifecycleObserver
 
     public RestaurantsViewModel() {
         super();
-        nbsRepository = new NearBySearchRepository();
+        nbsRepository = NearBySearchRepository.getInstance();
         firestoreRepository = new FirestoreRepository();
         listOfRestaurants = new MutableLiveData<>();
     }

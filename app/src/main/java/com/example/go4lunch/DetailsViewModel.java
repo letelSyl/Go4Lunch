@@ -50,7 +50,6 @@ public class DetailsViewModel extends ViewModel {
     }
 
     public void updateCurrentUser(String restName, String restId, String uid){
-//TODO : add list of user in repository
         UserHelper.updateRestName(restName, uid);
         UserHelper.updateRestId(restId, uid);
 

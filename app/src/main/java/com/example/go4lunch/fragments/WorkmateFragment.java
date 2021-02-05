@@ -26,9 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
  */
 public class WorkmateFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
 
 
@@ -49,7 +47,6 @@ public class WorkmateFragment extends Fragment {
 
 
 
-    // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
     public static WorkmateFragment newInstance(int columnCount) {
         WorkmateFragment fragment = new WorkmateFragment();

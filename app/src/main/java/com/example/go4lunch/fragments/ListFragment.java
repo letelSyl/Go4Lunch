@@ -35,13 +35,11 @@ import static com.example.go4lunch.httpRequest.RetrofitBuilder.logging;
  */
 public class ListFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     // Create keys for our Bundle
     private static final String KEY_POSITION = "position";
     private static double latitude;
     private static double longitude;
-    // TODO: Customize parameters
     private int mColumnCount = 1;
     private ListFragmentBinding listFragmentBinding;
     private ListFragmentItemListBinding itemListBinding;
@@ -63,7 +61,6 @@ public class ListFragment extends Fragment {
     public ListFragment() {
     }
 
-    // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
     public static ListFragment newInstance(int columnCount) {
 

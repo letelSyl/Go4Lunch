@@ -14,9 +14,6 @@ import java.util.List;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-/**
- TODO: Replace the implementation with code for your data type.
- */
 public class WorkmateFragmentRecyclerViewAdapter extends RecyclerView.Adapter<WorkmateFragmentViewHolder> {
 
     private final List<User> mValues;

@@ -103,7 +103,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        //TODO : look for singleton
 
         super.onCreate(savedInstanceState);
         if(isCurrentUserLogged()){
@@ -111,7 +110,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             UserHelper.getUser(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
-                  //TODO : recup doc dans firebase et send to singleton
                     User currentUser = documentSnapshot.toObject(User.class);
                     CurrentUser.set_instance(currentUser);
                 }

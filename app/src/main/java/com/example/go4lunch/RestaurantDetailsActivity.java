@@ -180,7 +180,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
             }
         });
     }
-//TODO : refactor using MVVM patern
     private void initFloatingActionButton(Result result){
         FloatingActionButton floatingActionButton = binding.floatingActionButton;
 

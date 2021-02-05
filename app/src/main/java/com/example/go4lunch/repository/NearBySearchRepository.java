@@ -23,7 +23,6 @@ import static com.example.go4lunch.httpRequest.RetrofitBuilder.logging;
 
 public class NearBySearchRepository {
 
-//TODO : modify locally list results to direct reading in views
 
     private MutableLiveData<List<Result>> results = new MutableLiveData<>();
     private static NearBySearchRepository nearBySearchRepository;
@@ -76,8 +75,6 @@ public class NearBySearchRepository {
         resultsOut.enqueue(new Callback<NearbySearch>() {
             @Override
             public void onResponse(@NonNull Call<NearbySearch> call, @NonNull Response<NearbySearch> response) {
-                //------TODO:list users  ici------
-            //    List<User> userList = new ArrayList<>();
 
                 if (response.body() != null) {
                     for (Result result : response.body().getResults()) {

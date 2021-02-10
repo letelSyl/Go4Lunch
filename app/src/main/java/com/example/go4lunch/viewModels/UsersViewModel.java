@@ -1,4 +1,4 @@
-package com.example.go4lunch;
+package com.example.go4lunch.viewModels;
 
         import com.example.go4lunch.models.User.User;
         import com.example.go4lunch.repository.FirestoreRepository;

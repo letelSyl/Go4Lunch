@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import com.example.go4lunch.MainActivity;
 import com.example.go4lunch.R;
 import com.example.go4lunch.RestaurantDetailsActivity;
-import com.example.go4lunch.RestaurantsViewModel;
+import com.example.go4lunch.viewModels.RestaurantsViewModel;
 import com.example.go4lunch.models.nearbySearch.Result;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;

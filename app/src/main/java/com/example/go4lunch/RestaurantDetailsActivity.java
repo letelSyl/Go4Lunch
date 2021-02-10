@@ -25,6 +25,8 @@ import com.example.go4lunch.fragments.WorkmateFragmentRecyclerViewAdapter;
 import com.example.go4lunch.models.User.User;
 import com.example.go4lunch.models.details.Details;
 import com.example.go4lunch.models.details.Result;
+import com.example.go4lunch.viewModels.DetailsViewModel;
+import com.example.go4lunch.viewModels.UsersViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;

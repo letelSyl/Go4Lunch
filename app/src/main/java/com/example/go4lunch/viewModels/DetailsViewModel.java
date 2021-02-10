@@ -1,11 +1,16 @@
-package com.example.go4lunch;
+package com.example.go4lunch.viewModels;
 
+import com.example.go4lunch.firestore.CurrentUser;
 import com.example.go4lunch.firestore.UserHelper;
 import com.example.go4lunch.models.User.User;
 import com.example.go4lunch.models.details.Result;
 import com.example.go4lunch.repository.DetailsRepository;
 import com.example.go4lunch.repository.FirestoreRepository;
 import com.example.go4lunch.repository.NearBySearchRepository;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
@@ -52,7 +57,13 @@ public class DetailsViewModel extends ViewModel {
     public void updateCurrentUser(String restName, String restId, String uid){
         UserHelper.updateRestName(restName, uid);
         UserHelper.updateRestId(restId, uid);
-
+        UserHelper.getUser(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                User currentUser = documentSnapshot.toObject(User.class);
+                CurrentUser.set_instance(currentUser);
+            }
+        });
     }
 
     public void increaseResultsNumUsers(String currentRestId) {

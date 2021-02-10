@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import com.example.go4lunch.MainActivity;
 import com.example.go4lunch.R;
-import com.example.go4lunch.RestaurantsViewModel;
+import com.example.go4lunch.viewModels.RestaurantsViewModel;
 import com.example.go4lunch.databinding.ListFragmentBinding;
 import com.example.go4lunch.databinding.ListFragmentItemListBinding;
 import com.example.go4lunch.models.User.User;
@@ -19,7 +19,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.util.Observer;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;

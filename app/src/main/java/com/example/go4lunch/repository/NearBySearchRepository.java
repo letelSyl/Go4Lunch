@@ -26,7 +26,6 @@ public class NearBySearchRepository {
 
     private MutableLiveData<List<Result>> results = new MutableLiveData<>();
     private static NearBySearchRepository nearBySearchRepository;
-    private static FirestoreRepository firestoreRepository;
 
     private static NearbySearchServices myInterface;
 

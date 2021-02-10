@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.go4lunch.R;
-import com.example.go4lunch.UsersViewModel;
+import com.example.go4lunch.viewModels.UsersViewModel;
 import com.example.go4lunch.models.User.User;
 import com.google.firebase.firestore.CollectionReference;
 

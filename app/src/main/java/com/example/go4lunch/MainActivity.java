@@ -2,12 +2,10 @@ package com.example.go4lunch;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.renderscript.Sampler;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,18 +22,15 @@ import com.example.go4lunch.firestore.UserHelper;
 import com.example.go4lunch.fragments.ListFragment;
 import com.example.go4lunch.fragments.MapFragment;
 import com.example.go4lunch.fragments.WorkmateFragment;
-import com.example.go4lunch.httpRequest.NearbySearchServices;
 import com.example.go4lunch.models.User.User;
-import com.example.go4lunch.models.nearbySearch.NearbySearch;
 import com.example.go4lunch.models.nearbySearch.Result;
+import com.example.go4lunch.viewModels.RestaurantsViewModel;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.model.TypeFilter;
-import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -44,11 +39,9 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -61,8 +54,6 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
-import retrofit2.Call;
-import retrofit2.http.QueryMap;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -77,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private BottomNavigationView bottomNavigationView;
 
-    private  RestaurantsViewModel restaurantsViewModel;
+    private RestaurantsViewModel restaurantsViewModel;
 
 
 
@@ -261,7 +252,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 // Set the fields to specify which types of place data to
                 // return after the user has made a selection.
-                List<Place.Field> fields = Arrays.asList(Place.Field.NAME, Place.Field.ID);
+                List<Place.Field> fields = Arrays.asList(Place.Field.NAME);
 
                 // Start the autocomplete intent.
                 Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
@@ -494,11 +485,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         return longitude;
     }
-/*
-    public static MutableLiveData<List<Result>> getRestaurantsList(){
-        return restaurantsViewModel.getListOfRestaurants();
-    }
-    public static RestaurantsViewModel getRestaurantsViewModel(){ return restaurantsViewModel; }
 
- */
+
 }

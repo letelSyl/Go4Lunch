@@ -24,9 +24,20 @@ import androidx.lifecycle.MutableLiveData;
 
 public class FirestoreRepository {
 
+    private static FirestoreRepository firestoreRepository;
+
     private MutableLiveData<List<User>> users = new MutableLiveData<>();
 
     private MutableLiveData<List<User>> filteredUsers = new MutableLiveData<>();
+
+
+
+    public static FirestoreRepository getInstance(){
+        if (firestoreRepository == null){
+            firestoreRepository = new FirestoreRepository();
+        }
+        return firestoreRepository;
+    }
 
     public MutableLiveData<List<User>> getUserList() {
         CollectionReference usersCollection = UserHelper.getUsersCollection();

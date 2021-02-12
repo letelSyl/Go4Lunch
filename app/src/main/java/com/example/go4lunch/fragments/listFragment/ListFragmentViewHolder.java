@@ -1,4 +1,4 @@
-package com.example.go4lunch.fragments;
+package com.example.go4lunch.fragments.listFragment;
 
 import android.content.Context;
 import android.location.Location;

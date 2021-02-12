@@ -1,4 +1,4 @@
-package com.example.go4lunch.fragments;
+package com.example.go4lunch.fragments.mapFragment;
 
 import android.Manifest;
 import android.content.Context;
@@ -12,10 +12,12 @@ import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import com.example.go4lunch.MainActivity;
+import com.example.go4lunch.activities.MainActivity;
 import com.example.go4lunch.R;
-import com.example.go4lunch.RestaurantDetailsActivity;
+import com.example.go4lunch.activities.RestaurantDetailsActivity;
+import com.example.go4lunch.eventBus.MessageEvent;
 import com.example.go4lunch.viewModels.RestaurantsViewModel;
 import com.example.go4lunch.models.nearbySearch.Result;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -30,6 +32,10 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -111,6 +117,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initMap();
@@ -168,7 +186,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                 double latitude = location.getLatitude();
                 double longitude = location.getLongitude();
                 LatLng l = new LatLng(latitude, longitude);
-                // saveCurrentLocation(l);<
                 float zoom = googleMap.getCameraPosition().zoom;
                 if (zoom < 15) {
                     zoom = 15;
@@ -222,5 +239,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         getContext().startActivity(details);
 
         return false;
+    }
+
+    @Subscribe
+    public void onMessageEvent(MessageEvent event){
+        Toast.makeText(getActivity(), event.message.getName(), Toast.LENGTH_SHORT).show();
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(event.message.getLatLng())
+                .zoom(20)
+                .build();
+        mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 }

@@ -41,5 +41,8 @@ public class RestaurantsViewModel extends ViewModel implements LifecycleObserver
         return listOfRestaurants;
     }
 
+    public void getSearchedRestaurantList(String searchedRestName){
+      nbsRepository.getSearchedRestaurantList(searchedRestName);
+    }
 
 }

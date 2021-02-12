@@ -1,4 +1,4 @@
-package com.example.go4lunch;
+package com.example.go4lunch.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,12 +16,15 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.go4lunch.BuildConfig;
+import com.example.go4lunch.R;
 import com.example.go4lunch.databinding.ActivityMainBinding;
+import com.example.go4lunch.eventBus.MessageEvent;
 import com.example.go4lunch.firestore.CurrentUser;
 import com.example.go4lunch.firestore.UserHelper;
-import com.example.go4lunch.fragments.ListFragment;
-import com.example.go4lunch.fragments.MapFragment;
-import com.example.go4lunch.fragments.WorkmateFragment;
+import com.example.go4lunch.fragments.listFragment.ListFragment;
+import com.example.go4lunch.fragments.mapFragment.MapFragment;
+import com.example.go4lunch.fragments.workmatesFragment.WorkmateFragment;
 import com.example.go4lunch.models.User.User;
 import com.example.go4lunch.models.nearbySearch.Result;
 import com.example.go4lunch.viewModels.RestaurantsViewModel;
@@ -39,6 +42,8 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -180,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void configureFragment(){
 
         // Initialize the SDK
-        Places.initialize(getApplicationContext(),BuildConfig.API_KEY);
+        Places.initialize(getApplicationContext(), BuildConfig.API_KEY);
 
         // Create a new PlacesClient instance
       //  PlacesClient placesClient = Places.createClient(this);
@@ -252,7 +257,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 // Set the fields to specify which types of place data to
                 // return after the user has made a selection.
-                List<Place.Field> fields = Arrays.asList(Place.Field.NAME);
+                List<Place.Field> fields = Arrays.asList(Place.Field.NAME,
+                                                            Place.Field.ID,
+                                                            Place.Field.LAT_LNG);
 
                 // Start the autocomplete intent.
                 Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
@@ -286,9 +293,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Place place = Autocomplete.getPlaceFromIntent(data);
+    /*
                 Intent details = new Intent (this, RestaurantDetailsActivity.class);
                 details.putExtra("placeId", place.getId());
                 this.startActivity(details);
+
+     */
+                EventBus.getDefault().post(new MessageEvent(place));
             }
             return;
         }

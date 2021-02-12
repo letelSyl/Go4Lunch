@@ -1,4 +1,4 @@
-package com.example.go4lunch;
+package com.example.go4lunch.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,10 +18,12 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.go4lunch.BuildConfig;
+import com.example.go4lunch.R;
 import com.example.go4lunch.databinding.ActivityRestaurantDetailsBinding;
 import com.example.go4lunch.firestore.CurrentUser;
 import com.example.go4lunch.firestore.UserHelper;
-import com.example.go4lunch.fragments.WorkmateFragmentRecyclerViewAdapter;
+import com.example.go4lunch.fragments.workmatesFragment.WorkmateFragmentRecyclerViewAdapter;
 import com.example.go4lunch.models.User.User;
 import com.example.go4lunch.models.details.Details;
 import com.example.go4lunch.models.details.Result;

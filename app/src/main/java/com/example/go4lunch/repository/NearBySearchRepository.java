@@ -43,6 +43,17 @@ public class NearBySearchRepository {
         myInterface = RetrofitBuilder.retrofit.create(NearbySearchServices.class);
     }
 
+    public void getSearchedRestaurantList(String searchedRestName){
+        List<Result> searchedResultsList = new ArrayList<>();
+        for (Result result : resultsList){
+            if(result.getName().equals(searchedRestName)){
+                searchedResultsList.add(result);
+            }
+        }
+        results.setValue(searchedResultsList);
+
+    }
+
     public void increaseResultsNumUsers(String currentRestId){
         for (Result result : resultsList){
             if (result.getPlaceId().equals(currentRestId)){

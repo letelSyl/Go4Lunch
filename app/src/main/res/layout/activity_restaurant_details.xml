@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RestaurantDetailsActivity">
+    tools:context=".activities.RestaurantDetailsActivity">
 
     <ImageView
         android:id="@+id/photo"
@@ -152,7 +152,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/likeButton"
         android:padding="16dp"
-        tools:context=".fragments.WorkmateFragment"
+        tools:context=".fragments.workmatesFragment.WorkmateFragment"
         tools:listitem="@layout/workmate_fragment"
         />
 

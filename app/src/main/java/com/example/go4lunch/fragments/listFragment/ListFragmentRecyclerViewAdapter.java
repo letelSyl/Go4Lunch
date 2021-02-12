@@ -1,4 +1,4 @@
-package com.example.go4lunch.fragments;
+package com.example.go4lunch.fragments.listFragment;
 
 import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.annotations.NonNull;
@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.go4lunch.R;
-import com.example.go4lunch.RestaurantDetailsActivity;
+import com.example.go4lunch.activities.RestaurantDetailsActivity;
 import com.example.go4lunch.models.nearbySearch.Result;
 
 import org.jetbrains.annotations.NotNull;

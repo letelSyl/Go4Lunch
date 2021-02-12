@@ -1,19 +1,24 @@
-package com.example.go4lunch.fragments;
+package com.example.go4lunch.fragments.listFragment;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import com.example.go4lunch.MainActivity;
+import com.example.go4lunch.activities.MainActivity;
 import com.example.go4lunch.R;
+import com.example.go4lunch.eventBus.MessageEvent;
 import com.example.go4lunch.viewModels.RestaurantsViewModel;
 import com.example.go4lunch.databinding.ListFragmentBinding;
 import com.example.go4lunch.databinding.ListFragmentItemListBinding;
 import com.example.go4lunch.models.User.User;
 import com.example.go4lunch.models.nearbySearch.Result;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -80,10 +85,8 @@ public class ListFragment extends Fragment {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
         restaurantsViewModel = new ViewModelProvider(requireActivity()).get(RestaurantsViewModel.class);
-      /*  if(restaurantsViewModel.getListOfRestaurants() == null) {
-            getLifecycle().addObserver(restaurantsViewModel);*/
         restaurantsViewModel.getListOfRestaurants().observe(this, this::updateUI);
-        //}
+
     }
 
     @Override
@@ -120,6 +123,17 @@ public class ListFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
 
     @Override
     public void onDestroy() {
@@ -136,6 +150,19 @@ public class ListFragment extends Fragment {
         this.mResults.clear();
         this.mResults.addAll(results);
         this.mAdapter.notifyDataSetChanged();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event){
+        Toast.makeText(getActivity(), event.message.getName(), Toast.LENGTH_SHORT).show();
+        List<Result> searchedRestList = new ArrayList<>();
+        for (Result result:mResults){
+            if(result.getName().equals(event.message.getName())){
+                searchedRestList.add(result);
+            }
+        }
+        updateUI(searchedRestList);
+
     }
 }
 

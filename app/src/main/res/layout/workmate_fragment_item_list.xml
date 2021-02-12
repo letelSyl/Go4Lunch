@@ -11,5 +11,5 @@
     android:layout_marginRight="16dp"
     android:background="@color/titleColor"
     app:layoutManager="LinearLayoutManager"
-    tools:context=".fragments.WorkmateFragment"
+    tools:context=".fragments.workmatesFragment.WorkmateFragment"
     tools:listitem="@layout/workmate_fragment" />

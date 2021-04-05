@@ -23,6 +23,7 @@
     <string name="your_lunch">VOTRE DÉJEUNER</string>
     <string name="settings">RÉGLAGES</string>
     <string name="logout">DÉCONECTION</string>
+    <string name="No_restaurant_selected_yet">Pas encore de restaurant sélectionné</string>
 
     <!-- Bottom navigation view -->
     <string name="bottom_navigation_menu_map_view">Carte</string>
@@ -51,4 +52,21 @@
     <string name="add_a_like">Vous venez d \'ajouter un Like!</string>
     <string name="no_website">Le site Web n\'existe pas !</string>
 
+    <!-- CHAT ACTIVITY -->
+    <string name="toolbar_title_chat_activity">Chats de discussions</string>
+    <string name="text_input_title_chat_activity">Composer votre message</string>
+    <string name="button_title_chat_activity">ENVOYER</string>
+    <string name="text_view_chat_error">Ce fil de discussion ne contient pour le moment aucun message&#8230;</string>
+    <string name="popup_title_permission_files_access">Cette application a besoin de permission pour fonctionner.</string>
+    <string name="toast_title_no_image_chosen">Aucune image choisie&#8230;</string>
+    <string name="chat">CHAT</string>
+    <string name="notification_title">your lunch</string>
+    <string name="default_notification_channel_id">101</string>
+
+<!--    notifications-->
+    <string name="notifications_on">Notications activées !</string>
+    <string name="notifications_off">Notications désactivées !</string>
+    <string name="enable_notifications_once_per_day">activer les notifications (une fois par jour)</string>
+    <string name="notification_message_with_restId">Aujourd\'hui, vous déjeunez à : </string>
+    <string name="notification_message_without_restId">Vous n\'avez pas encore choisi où manger!</string>
 </resources>

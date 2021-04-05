@@ -1,6 +1,7 @@
 package com.example.go4lunch.activities;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
@@ -16,6 +17,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.example.go4lunch.BuildConfig;
@@ -29,6 +31,7 @@ import com.example.go4lunch.models.details.Details;
 import com.example.go4lunch.models.details.Result;
 import com.example.go4lunch.viewModels.DetailsViewModel;
 import com.example.go4lunch.viewModels.UsersViewModel;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -57,15 +60,17 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
 
-    public static final String PREFS= "PREFS";
-    private static String IS_CLICKED = "IS_CLICKED";
-    private static String IS_LIKED = "IS_LIKED";
-
-    private static String RESTAURANT_NAME = "RESTAURANT_NAME";
-    private static String RESTAURANT_ID = "RESTAURANT_ID";
-    SharedPreferences prefs;
+//    public static final String PREFS= "PREFS";
+//    private static String IS_CLICKED = "IS_CLICKED";
+//    private static String IS_LIKED = "IS_LIKED";
+//
+//    private static String RESTAURANT_NAME = "RESTAURANT_NAME";
+//    private static String RESTAURANT_ID = "RESTAURANT_ID";
+//    SharedPreferences prefs;
 
     private List<User> mUsers = new ArrayList<>();
+
+    private MaterialToolbar toolbar;
 
     private FirebaseFirestore firebaseFirestore;
     @NonNull
@@ -81,7 +86,9 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
 
         setContentView(mView);
 
-        prefs = getApplicationContext().getSharedPreferences(PREFS, MODE_PRIVATE);
+        this.configureToolbar();
+
+        //prefs = getApplicationContext().getSharedPreferences(PREFS, MODE_PRIVATE);
         mRecyclerView = findViewById(R.id.list);
 
         Intent intent = getIntent();
@@ -123,7 +130,17 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(adapter);
     }
 
-
+    private void configureToolbar() {
+        //Set the toolbar
+        this.toolbar = binding.toolbar.toolbar;
+        setSupportActionBar(toolbar);
+        // Get a support ActionBar corresponding to this toolbar
+        ActionBar ab = getSupportActionBar();
+        // Enable the Up button
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
+    }
 
     @Override
     protected void onStart() {

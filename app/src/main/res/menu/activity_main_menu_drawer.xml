@@ -10,6 +10,10 @@
                     android:id="@+id/your_lunch"
                     android:icon="@drawable/ic_lunch"
                     android:title="@string/your_lunch" />
+                <item
+                    android:id="@+id/chat"
+                    android:icon="@drawable/ic_chat_black_24dp"
+                    android:title="@string/chat" />
 
                 <item
                     android:id="@+id/settings"

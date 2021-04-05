@@ -95,7 +95,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
         mMapView.onCreate(savedInstanceState);
 
-        mMapView.onResume();
+
 
         locationManager = (LocationManager)
                 Objects.requireNonNull(getActivity()).getSystemService(Context.LOCATION_SERVICE);
@@ -122,10 +122,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         EventBus.getDefault().register(this);
     }
 
+
+
     @Override
     public void onStop() {
-        EventBus.getDefault().unregister(this);
         super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -211,7 +213,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         mGoogleMap.setMyLocationEnabled(true);
         mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
 
-       restaurantsViewModel.getListOfRestaurants().observe(this, results -> {
+        restaurantsViewModel.getListOfRestaurants().observe(this, results -> {
 
             if (results != null) {
                 mGoogleMap.clear();
@@ -219,7 +221,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                     Marker marker = mGoogleMap.addMarker(new MarkerOptions()
                             .position(new LatLng(result.getGeometry().getLocation().getLat(), result.getGeometry().getLocation().getLng()))
                             .title(result.getName()));
-                            marker.setIcon(BitmapDescriptorFactory.fromResource(result.getNumUsers() > 0 ? R.drawable.green_dot : R.drawable.red_dot));
+                    marker.setIcon(BitmapDescriptorFactory.fromResource(result.getNumUsers() > 0 ? R.drawable.green_dot : R.drawable.red_dot));
                     allMarkersMap.put(marker, result);
                 }
             }

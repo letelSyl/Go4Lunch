@@ -22,6 +22,7 @@
     <string name="your_lunch">YOUR LUNCH</string>
     <string name="settings">SETTINGS</string>
     <string name="logout">LOGOUT</string>
+    <string name="No_restaurant_selected_yet">No restaurant selected yet</string>
 
     <!-- Bottom navigation view -->
     <string name="bottom_navigation_menu_map_view">Map View</string>
@@ -40,7 +41,7 @@
 
     <string name="is_joining">is joining!</string>
     <string name="hungry">I\'m hungry!</string>
-    <string name="alert">Alerte</string>
+    <string name="alert">Alert</string>
     <string name="auth_gps">To use this feature you need to activate GPS, do you want to activate it ?</string>
     <string name="is_eating_at"> is eating at </string>
     <string name="hasnt_decided"> hasn\'t decided yet</string>
@@ -50,4 +51,21 @@
     <string name="add_a_like">You\'ve just add a like !</string>
     <string name="no_website">Website doesn\'t exist !</string>
 
+    <!-- CHAT ACTIVITY -->
+    <string name="toolbar_title_chat_activity">Chat</string>
+    <string name="text_input_title_chat_activity">Compose your message</string>
+    <string name="button_title_chat_activity">SEND</string>
+    <string name="text_view_chat_error">This discussion thread does not currently contain any messages.&#8230;</string>
+    <string name="popup_title_permission_files_access">This app needs permission to work.</string>
+    <string name="toast_title_no_image_chosen">No image chosen&#8230;</string>
+    <string name="chat">CHAT</string>
+    <string name="notification_title">your lunch</string>
+    <string name="default_notification_channel_id">101</string>
+
+<!--    notifications-->
+    <string name="notifications_on">Notications on !</string>
+    <string name="notifications_off">Notications off !</string>
+    <string name="enable_notifications_once_per_day">enable notifications (once per day)</string>
+    <string name="notification_message_with_restId">Today you have lunch at : </string>
+    <string name="notification_message_without_restId">You don\'t have  choose  where to eat yet !</string>
 </resources>

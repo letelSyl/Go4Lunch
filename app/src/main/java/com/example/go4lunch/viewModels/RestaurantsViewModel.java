@@ -31,6 +31,7 @@ public class RestaurantsViewModel extends ViewModel implements LifecycleObserver
 
     public void getNearBySearchRepository(double latitude, double longitude) {
         listOfRestaurants = nbsRepository.getRestaurantsList(latitude, longitude);
+        // post value list of restaurant
     }
 
     public MutableLiveData<List<User>> getListOfUsers(String restName) {

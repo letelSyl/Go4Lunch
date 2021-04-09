@@ -5,9 +5,7 @@ import com.example.go4lunch.models.nearbySearch.Result;
 import com.example.go4lunch.repository.FirestoreRepository;
 import com.example.go4lunch.repository.NearBySearchRepository;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.MutableLiveData;
@@ -31,7 +29,6 @@ public class RestaurantsViewModel extends ViewModel implements LifecycleObserver
 
     public void getNearBySearchRepository(double latitude, double longitude) {
         listOfRestaurants = nbsRepository.getRestaurantsList(latitude, longitude);
-        // post value list of restaurant
     }
 
     public MutableLiveData<List<User>> getListOfUsers(String restName) {

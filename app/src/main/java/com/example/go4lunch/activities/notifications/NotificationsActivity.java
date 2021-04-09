@@ -52,9 +52,6 @@ public class NotificationsActivity extends AppCompatActivity {
         binding.notificationsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             WorkManager mWorkManager = WorkManager.getInstance(this);
             if (isChecked) {
-//
-//                Calendar calendar1 = Calendar.getInstance();
-//                Calendar calendar2 = Calendar.getInstance();
 
                 long delay = calculateDelay(11,45, 0);
 
@@ -89,6 +86,22 @@ public class NotificationsActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * <b>Calculate the delay</b>
+     * <p>
+     *     return the delay to senbd the first notification
+     * </p>
+     * @param hour
+     *          choosen hour for notification
+     * @param min
+     *          choosen min for notification
+     * @param sec
+     *          choosen sec for notification
+     * @return long
+     *
+     * @see this#calculateDelta(Calendar, Calendar)
+     *
+     */
     public static long calculateDelay(int hour, int min, int sec) {
 
 
@@ -105,6 +118,19 @@ public class NotificationsActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * <b>Calculate the delta</b>
+     * <p>
+     *     Return the delta between two calendars in seconds
+     * </p>
+     * @param calendar1
+     *          moment when notification will be sent
+     * @param calendar2
+     *          moment when user activate the notification
+     * @return long
+     *
+     * @see this#calculateDelay(int, int, int)
+     */
     public static long calculateDelta(Calendar calendar1, Calendar calendar2){
 
       long delta = Double.valueOf(floor(calendar1.getTimeInMillis()/1000.0) - floor(calendar2.getTimeInMillis()/1000.0)).longValue();

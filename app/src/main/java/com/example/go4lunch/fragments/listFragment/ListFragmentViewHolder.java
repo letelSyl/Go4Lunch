@@ -22,7 +22,6 @@ public class ListFragmentViewHolder extends RecyclerView.ViewHolder {
 
     private String picUrl;
 
-    //private RestaurantsViewModel restaurantsViewModel;
 
     public ListFragmentViewHolder(View view, Context context) {
         super(view);

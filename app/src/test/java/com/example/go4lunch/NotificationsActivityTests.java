@@ -20,7 +20,6 @@ import static org.junit.Assert.assertTrue;
 
 public class NotificationsActivityTests {
 
-    private NotificationsActivity notificationsActivityTests;
 
 
     @Test

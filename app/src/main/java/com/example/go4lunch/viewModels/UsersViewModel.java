@@ -1,14 +1,12 @@
 package com.example.go4lunch.viewModels;
 
-        import com.example.go4lunch.models.User.User;
-        import com.example.go4lunch.repository.FirestoreRepository;
-        import com.google.firebase.firestore.CollectionReference;
+import com.example.go4lunch.models.User.User;
+import com.example.go4lunch.repository.FirestoreRepository;
 
-        import java.util.List;
+import java.util.List;
 
-        import androidx.lifecycle.LiveData;
-        import androidx.lifecycle.MutableLiveData;
-        import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 public class UsersViewModel extends ViewModel {
 

@@ -8,7 +8,6 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.go4lunch.R;
 import com.example.go4lunch.databinding.ActivityChatBinding;
-import com.example.go4lunch.databinding.ToolbarBinding;
 import com.example.go4lunch.firestore.CurrentUser;
 import com.example.go4lunch.firestore.MessageHelper;
 import com.example.go4lunch.firestore.UserHelper;
@@ -27,7 +26,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.OnClick;
 
 public class ChatActivity extends AppCompatActivity implements ChatAdapter.Listener {
 

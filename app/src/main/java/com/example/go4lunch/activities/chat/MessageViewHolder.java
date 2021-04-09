@@ -1,6 +1,5 @@
 package com.example.go4lunch.activities.chat;
 
-import android.graphics.drawable.GradientDrawable;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -21,33 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 public class MessageViewHolder extends RecyclerView.ViewHolder {
 
 
-    //ROOT VIEW
-//    @BindView(R.id.activity_chat_item_root_view)
-//    RelativeLayout rootView;
-
-//
-//
-//    //PROFILE CONTAINER
-//    @BindView(R.id.activity_chat_item_profile_container)
-//    LinearLayout profileContainer;
-//    @BindView(R.id.activity_chat_item_profile_container_profile_image)
-//    ImageView imageViewProfile;
-//
-//    //MESSAGE CONTAINER
-//    @BindView(R.id.activity_chat_item_message_container) RelativeLayout messageContainer;
-//    //IMAGE SENDED CONTAINER
-//    @BindView(R.id.activity_chat_item_message_container_image_sent_cardview)
-//    CardView cardViewImageSent;
-//    @BindView(R.id.activity_chat_item_message_container_image_sent_cardview_image) ImageView imageViewSent;
-//    //TEXT MESSAGE CONTAINER
-//    @BindView(R.id.activity_chat_item_message_container_text_message_container) LinearLayout textMessageContainer;
-//    @BindView(R.id.activity_chat_item_message_container_text_message_container_text_view)
-//    TextView textViewMessage;
-//    //DATE TEXT
-//    @BindView(R.id.activity_mentor_chat_item_message_container_text_view_date) TextView textViewDate;
-
-
-    //private View mView;
 
     //FOR DATA
     private final int colorCurrentUser;
@@ -55,8 +27,6 @@ public class MessageViewHolder extends RecyclerView.ViewHolder {
 
     public MessageViewHolder(View itemView) {
         super(itemView);
-    //    mView = itemView;
-       // ButterKnife.bind(this, itemView);
         colorCurrentUser = ContextCompat.getColor(itemView.getContext(), R.color.personal_grey);
         colorRemoteUser = ContextCompat.getColor(itemView.getContext(), R.color.colorPrimary);
     }
@@ -81,13 +51,6 @@ public class MessageViewHolder extends RecyclerView.ViewHolder {
                     .apply(RequestOptions.circleCropTransform())
                     .into(ActivityChatItemBinding.bind(itemView).activityChatItemProfileContainerProfileImage);
 
-//        // Update image sent ImageView
-//        if (message.getUrlImage() != null){
-//            glide.load(message.getUrlImage())
-//                    .into(ActivityChatItemBinding.bind(itemView).activityChatItemMessageContainerImageSentCardviewImage);
-//            ActivityChatItemBinding.bind(itemView).activityChatItemMessageContainerImageSentCardviewImage.setVisibility(View.VISIBLE);
-//        } else { ActivityChatItemBinding.bind(itemView).activityChatItemMessageContainerImageSentCardviewImage.setVisibility(View.GONE);
-//        }
 
         //Update Message Bubble Color Background
         ActivityChatItemBinding.bind(itemView).activityChatItemMessageContainer.setBackgroundColor(isCurrentUser ? colorCurrentUser : colorRemoteUser);

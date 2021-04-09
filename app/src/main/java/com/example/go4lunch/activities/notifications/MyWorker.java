@@ -14,7 +14,6 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
-import io.reactivex.disposables.Disposable;
 
 public class MyWorker extends Worker {
 

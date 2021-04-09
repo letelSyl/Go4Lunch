@@ -28,11 +28,12 @@ import com.example.go4lunch.fragments.listFragment.ListFragment;
 import com.example.go4lunch.fragments.mapFragment.MapFragment;
 import com.example.go4lunch.fragments.workmatesFragment.WorkmateFragment;
 import com.example.go4lunch.models.User.User;
-import com.example.go4lunch.models.nearbySearch.Result;
 import com.example.go4lunch.viewModels.RestaurantsViewModel;
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.model.TypeFilter;
@@ -59,14 +60,30 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
+
+
+/**
+ * <b>Represents the main screen of the application</b>
+ * <p>Displays differents elements
+ * <ul>
+ *     <li>a toolbar</li>
+ *     <li>a botton navigation bar</li>
+ *     <li>the selected fragment</li>
+ * </ul>
+ * </p>
+ *
+ * @see MapFragment
+ * @see ListFragment
+ * @see WorkmateFragment
+ *
+ * @author letelSyl
+ * @version 1.0
+ */
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private ActivityMainBinding binding;
-
-
 
 
     private static int AUTOCOMPLETE_REQUEST_CODE = 1;
@@ -76,7 +93,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private BottomNavigationView bottomNavigationView;
 
     private RestaurantsViewModel restaurantsViewModel;
-
 
 
     private DrawerLayout drawerLayout;
@@ -91,27 +107,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ListFragment mListFragment = new ListFragment();
     private WorkmateFragment mWorkmateFragment = new WorkmateFragment();
 
-    private static double latitude;//
-                                     // à metre dans le view model*/
-    private static double longitude;//
-
-
+    private static double latitude;
+    private static double longitude;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        if(isCurrentUserLogged()){
+        if (isCurrentUserLogged()) {
             this.startActivity();
 
-        } else{
+        } else {
             this.startSignInActivity();
 
         }
     }
 
-    public void startActivity(){
+    /**
+     * Start MainActivity
+     *
+     * @see this.configureToolbar()
+     * @see this.configureDrawerLayout()
+     * @see this.configureNavigationView()
+     * @see this.updateUIWhenStarting()
+     * @see this.configureBottomView()
+     * @see this.getCurrentLocation()
+     * @see this.setupRestaurantList(double, double)
+     * @see this.configureFragment()
+     */
+    public void startActivity() {
         UserHelper.getUser(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -141,11 +166,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         setupRestaurantList(latitude, longitude);
 
+
         this.configureFragment();
     }
-    public void setupRestaurantList(double latitude, double longitude){
-       restaurantsViewModel.
-               getNearBySearchRepository(latitude, longitude);
+
+    /**
+     * Generates the list of restaurants based on current coordinates
+     *
+     * @param latitude
+     *          the current latitude
+     * @param longitude
+     *          the current longitude
+     *
+     * @see RestaurantsViewModel#getNearBySearchRepository(double, double)
+     */
+    public void setupRestaurantList(double latitude, double longitude) {
+        restaurantsViewModel.
+                getNearBySearchRepository(latitude, longitude);
     }
 
     @Override
@@ -160,23 +197,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onResume();
     }
 
-    protected void configureToolbar(){
+    /**
+     * configure toolbar
+     *
+     */
+    protected void configureToolbar() {
 
         this.toolbar = binding.toolbar.toolbar;
         setSupportActionBar(toolbar);
 
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //1 - inflate the menu and add it to the toolbar
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        //2 - Handle actions on menu items
         if (itemSwitch(item.getItemId())) {
 
             return true;
@@ -186,19 +227,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    protected void configureFragment(){
+    /**
+     * Configure the selected fragment
+     *
+     */
+    protected void configureFragment() {
 
         // Initialize the SDK
         Places.initialize(getApplicationContext(), BuildConfig.API_KEY);
 
-        // Create a new PlacesClient instance
-      //  PlacesClient placesClient = Places.createClient(this);
-
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment, mMapFragment).commit();
     }
 
-    // 2 - Configure BottomNavigationView Listener
-    private void configureBottomView(){
+    /**
+     * Configure BottomNavigationView Listener
+     *
+     */
+    private void configureBottomView() {
         bottomNavigationView = binding.activityMainBottomNavigation;
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -212,7 +257,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-    // Handle back click to close menu
         if (this.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             this.drawerLayout.closeDrawer(GravityCompat.START);
         } else {
@@ -230,8 +274,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    // 2 - Configure Drawer Layout
-    private void configureDrawerLayout(){
+    /**
+     * Configure Drawer Layout
+     */
+
+    private void configureDrawerLayout() {
         this.drawerLayout = binding.activityMainDrawerLayout;
         ActionBarDrawerToggle toggle;
         toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -240,18 +287,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    // 3 - Configure NavigationView
-    private void configureNavigationView(){
-       // this.navigationView = (NavigationView) findViewById(R.id.activity_main_nav_view);
+    /**
+     * Configure NavigationView
+     */
+    private void configureNavigationView() {
 
-     binding.activityMainNavView.setNavigationItemSelectedListener((NavigationView.OnNavigationItemSelectedListener) this);
+        binding.activityMainNavView.setNavigationItemSelectedListener((NavigationView.OnNavigationItemSelectedListener) this);
 
     }
 
-    //----------------------------------
-    // UI
-    //----------------------------------
 
+    /**
+     * Configure the actions of drawer menu buttons
+     * @param itemId
+     *      selected drawer menu's id
+     * @return boolean
+     */
     private boolean itemSwitch(int itemId) {
 
         switch (itemId) {
@@ -260,8 +311,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 // Set the fields to specify which types of place data to
                 // return after the user has made a selection.
                 List<Place.Field> fields = Arrays.asList(Place.Field.NAME,
-                                                            Place.Field.ID,
-                                                            Place.Field.LAT_LNG);
+                        Place.Field.ID,
+                        Place.Field.LAT_LNG);
 
                 // Start the autocomplete intent.
                 Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
@@ -277,13 +328,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 Context context = getApplicationContext();
 
-                if(placeId != "") {
+                if (!placeId.equals("")) {
                     Intent details = new Intent(context, RestaurantDetailsActivity.class);
                     details.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     details.putExtra("placeId", placeId);
                     context.startActivity(details);
-                }else {
-                    Toast.makeText(getApplicationContext(), R.string.No_restaurant_selected_yet,  Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.No_restaurant_selected_yet, Toast.LENGTH_LONG).show();
 
                 }
 
@@ -312,8 +363,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode == RC_SIGN_IN){
-            if(resultCode == RESULT_OK){
+        if (requestCode == RC_SIGN_IN) {
+            if (resultCode == RESULT_OK) {
                 this.startActivity();
             }
         }
@@ -328,9 +379,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-
-    private boolean updateMainFragment(Integer integer){
-        switch (integer){
+    /**
+     * <b>Fragment selection</b>
+     * <p>
+     *     select wich fragment showing when user click on the icon on the bottom navigation bar
+     * </p>
+     *
+     * @param integer
+     *      Selected fragment's id
+     * @return boolean
+     */
+    private boolean updateMainFragment(Integer integer) {
+        switch (integer) {
             case R.id.action_map_view:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment, mMapFragment).commit();
 
@@ -347,13 +407,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    private void updateUIWhenStarting(){
+    /**
+     * Configure the drawer menu UI
+     */
+    private void updateUIWhenStarting() {
 
-       NavigationView navView =  binding.activityMainNavView;
-       ImageView img =navView.getHeaderView(0).findViewById(R.id.profile_img);
+        NavigationView navView = binding.activityMainNavView;
+        ImageView img = navView.getHeaderView(0).findViewById(R.id.profile_img);
 
 
-        if (getCurrentUser() != null){
+        if (isCurrentUserLogged()) {
 
             //Get picture URL from Firebase
             if (getCurrentUser().getPhotoUrl() != null) {
@@ -361,7 +424,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .load(getCurrentUser().getPhotoUrl())
                         .apply(RequestOptions.circleCropTransform())
                         .into(img);
-            } else{
+            } else {
                 Glide.with(this)
                         .load(R.drawable.ic_person_black_24dp)
                         .apply(RequestOptions.circleCropTransform())
@@ -373,26 +436,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             TextView userEmail = navView.getHeaderView(0).findViewById(R.id.usermail);
             String email = TextUtils.isEmpty(getCurrentUser().getEmail()) ? getString(R.string.info_no_email_found) : getCurrentUser().getEmail();
             TextView userName = navView.getHeaderView(0).findViewById(R.id.username);
-            String username =  TextUtils.isEmpty(getCurrentUser().getDisplayName()) ? getString(R.string.info_no_username_found) : getCurrentUser().getDisplayName();
+            String username = TextUtils.isEmpty(getCurrentUser().getDisplayName()) ? getString(R.string.info_no_username_found) : getCurrentUser().getDisplayName();
 
             //Update views with data
             userName.setText(username);
             userEmail.setText(email);
 
-           createUserInFirestore();
+            createUserInFirestore();
         }
 
 
     }
 
-    //-----------------
-    //NAVIGATION
-    //-----------------
 
-    // Launch Sign-In Activity
+    /**
+     * Launch Sign-In Activity
+     */
     private void startSignInActivity() {
 
-        List<AuthUI.IdpConfig> providers =Arrays.asList(
+        List<AuthUI.IdpConfig> providers = Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder().build(),
                 new AuthUI.IdpConfig.FacebookBuilder().build(),
                 new AuthUI.IdpConfig.GoogleBuilder().build());
@@ -410,59 +472,69 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-
-    // --------------------
-    // UTILS
-    // --------------------
-
+    /**
+     * get the current user
+     * <p>
+     *     get from Firebase the authenticated user
+     * </p>
+     * @return FirebaseUser
+     */
     @Nullable
-    protected static FirebaseUser getCurrentUser(){
+    protected static FirebaseUser getCurrentUser() {
         return FirebaseAuth.getInstance().getCurrentUser();
     }
 
-
-
-    protected Boolean isCurrentUserLogged(){
+    /**
+     * verify if a user is logged
+     * @return
+     */
+    protected Boolean isCurrentUserLogged() {
         return (getCurrentUser() != null);
     }
 
-    protected OnFailureListener onFailureListener(){
+    protected OnFailureListener onFailureListener() {
         return new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(),getString(R.string.error_unknown_error),Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.error_unknown_error), Toast.LENGTH_LONG).show();
             }
         };
     }
 
-    private void createUserInFirestore(){
+    private void createUserInFirestore() {
+        UserHelper.getUsersCollection().document(getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot doc = task.getResult();
+                    if(!doc.exists()){
+                        String urlPicture = (getCurrentUser().getPhotoUrl() != null) ? getCurrentUser().getPhotoUrl().toString() : null;
+                        String name = getCurrentUser().getDisplayName();
+                        String uid = getCurrentUser().getUid();
+                        String restName = "";
+                        String restId = "";
+                        ArrayList<String> likedRestaurant = new ArrayList<>();
 
-      //  if (getCurrentUser() != null){
-        if (UserHelper.getUser(getCurrentUser().getUid()) == null){
-            String urlPicture = (getCurrentUser().getPhotoUrl() != null) ? getCurrentUser().getPhotoUrl().toString() : null;
-            String name = getCurrentUser().getDisplayName();
-            String uid = getCurrentUser().getUid();
-            String restName="";
-            String restId="";
-            ArrayList<String> likedRestaurant = new ArrayList<>();
+                        UserHelper.createUser(uid, name, urlPicture, restName, restId, likedRestaurant);
+                    }
+                }
+            }
+        });
 
-            UserHelper.createUser(uid, name,  urlPicture, restName,restId, likedRestaurant).addOnFailureListener(this.onFailureListener());
-        }
     }
 
 
-
-    private void signOutUserFromFirebase(){
+    private void signOutUserFromFirebase() {
         AuthUI.getInstance()
                 .signOut(this)
                 .addOnSuccessListener(this, this.updateUIAfterRESTRequestsCompleted(SIGN_OUT_TASK));
     }
 
-    private OnSuccessListener<Void> updateUIAfterRESTRequestsCompleted(final int origin){
+    private OnSuccessListener<Void> updateUIAfterRESTRequestsCompleted(final int origin) {
         return new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                switch (origin){
+                switch (origin) {
                     // h - Hiding Progress bar after request completed
 
                     case SIGN_OUT_TASK:
@@ -479,9 +551,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void getCurrentLocation() {
 
-        LocationManager  locationManager = (LocationManager)
+        LocationManager locationManager = (LocationManager)
                 Objects.requireNonNull(this).getSystemService(Context.LOCATION_SERVICE);
 
+
+            currentLoc(locationManager);
+
+    }
+
+    public void currentLoc(LocationManager locationManager) {
+
+        Criteria criteria = new Criteria();
         if (ActivityCompat.checkSelfPermission(Objects.requireNonNull(this),
                 android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             int REQUEST_LOCATION = 1;
@@ -489,18 +569,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
                             android.Manifest.permission.ACCESS_FINE_LOCATION},
                     REQUEST_LOCATION);
-            currentLoc(locationManager);
-
-        } else {
-            currentLoc(locationManager);
         }
-
-
-
-    }
-    public void currentLoc(LocationManager locationManager){
-
-        Criteria criteria = new Criteria();
         android.location.Location location = locationManager.getLastKnownLocation(Objects.requireNonNull(locationManager
                 .getBestProvider(criteria, false)));
         if (location !=  null) {
@@ -509,9 +578,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-
-
-//-----------------TODO:Passer par le view model----------
 
     public static double getLatitude(){
         return latitude;

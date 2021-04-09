@@ -1,23 +1,11 @@
 package com.example.go4lunch.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import io.reactivex.disposables.Disposable;
-
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.example.go4lunch.BuildConfig;
@@ -39,15 +27,31 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import io.reactivex.disposables.Disposable;
+
+/**
+ * <b>Show details of selected restaurant</b>
+ *
+ * @see DetailsViewModel
+ * @see UsersViewModel
+ *
+ * @author letelSyl
+ * @version 1.0
+ */
 public class RestaurantDetailsActivity extends AppCompatActivity {
 
 
     private ActivityRestaurantDetailsBinding binding;
 
-    private Disposable disposable;
-
     private DetailsViewModel detailsViewModel;
-    private MutableLiveData<Details> mutableLiveData;
     private UsersViewModel usersViewModel;
 
 
@@ -59,14 +63,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
 
 
     private RecyclerView mRecyclerView;
-
-//    public static final String PREFS= "PREFS";
-//    private static String IS_CLICKED = "IS_CLICKED";
-//    private static String IS_LIKED = "IS_LIKED";
-//
-//    private static String RESTAURANT_NAME = "RESTAURANT_NAME";
-//    private static String RESTAURANT_ID = "RESTAURANT_ID";
-//    SharedPreferences prefs;
 
     private List<User> mUsers = new ArrayList<>();
 
@@ -154,9 +150,19 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        //   adapter.stopListening();
     }
 
+    /**
+     * <b>Configure call button</b>
+     * <p>
+     *     open call application of the device
+     * </p>
+     *
+     * @see this#updateWithRestaurantDetail(Result)
+     *
+     * @param result
+     *      selected restaurant
+     */
     private void initCallButton(Result result){
 
         binding.callButton.setOnClickListener(new View.OnClickListener() {
@@ -174,6 +180,17 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * <b>configure like button</b>
+     * <p>
+     *     add selected restaurant to the user liked restaurant arryList
+     * </p>
+     *
+     * @see this#updateWithRestaurantDetail(Result)
+     *
+     * @param result
+     *      selected restaurant
+     */
     private void initLikeButton(Result result){
         binding.likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,6 +203,18 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * <b>Configure website button</b>
+     * <p>
+     *     open the restaurant's website in the device's web navigator
+     * </p>
+     *
+     * @see this#updateWithRestaurantDetail(Result)
+     *
+     * @param result
+     *      selected restaurant
+     *
+     */
     private void initWebsiteButton(Result result){
         binding.websiteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -201,6 +230,20 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
             }
         });
     }
+
+    /**
+     * <b>Configure floatingAction button</b>
+     * <p>
+     *     set resId ad restName of the current user with selected restauranr id and name / set them empty
+     *    
+     * </p>
+     *
+     * @see this#updateWithRestaurantDetail(Result)
+     *
+     * @param result
+     *      selected restaurant
+     *
+     */
     private void initFloatingActionButton(Result result){
         FloatingActionButton floatingActionButton = binding.floatingActionButton;
 
@@ -244,6 +287,21 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
             }});
     }
 
+    /**
+     * <b>update the view</b>
+     * <p>
+     *     show details of selected restaurant and initialise buttons
+     * </p>
+     *
+     * @see this#initCallButton(Result) 
+     * @see this#initLikeButton(Result)  
+     * @see this#initWebsiteButton(Result)  
+     * @see this#initFloatingActionButton(Result) 
+     *
+     * @param result
+     *      selected restaurant
+     *
+     */
     private void updateWithRestaurantDetail(Result result) {
 
 
@@ -271,7 +329,18 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
     }
 
 
-
+    /**
+     * <b>complete selected restaurant list of users</b>
+     * <p>
+     *     update the list of users with filterd users list of the view model
+     * </p>
+     *
+     * @see UsersViewModel#getFilteredListOfUsers(String)
+     *
+     * @param users
+     *      list of the users booked in selected restaurant
+     *
+     */
     public void updateUIWithUsers(List<User> users) {
         this.mUsers.clear();
         this.mUsers.addAll(users);
